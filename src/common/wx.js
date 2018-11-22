@@ -17,7 +17,7 @@ myApi.wx = (function() {
 				timestamp: param.timestamp,
 				nonceStr: param.nonceStr, 
 				signature: param.signature,
-				jsApiList: ['chooseWXPay', 'chooseImage', 'uploadImage', 'scanQRCode'],
+				jsApiList: ['chooseWXPay', 'chooseImage', 'uploadImage', 'scanQRCode']
 			});
 			wx.ready(function(){
 				console.log("JSAPI ready.");
@@ -80,7 +80,7 @@ myApi.wx = (function() {
 					}
 				}
 			});			
-		}, // scan
+		} // scan
 		
 	};
 	

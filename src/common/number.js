@@ -36,7 +36,7 @@ myApi.number = (function(){
 				result = s;
 			
 			return result;
-		},
+		}
 	};
 	
 	return obj;

@@ -1,24 +1,169 @@
-$(function() {
-	window.onpageshow = function(event) {
-		// ËÄÅÁöÑÂà∑Êñ∞Êú∫Âà∂ÔºåÊú™ÊúâÁî®
-		if (event.persisted) {
-			window.location.reload()
-		}		
-	};
-});
+/*
+	My api main entry
+	2018.11.22 GuoJS
+*/
+
+if (typeof jQuery === 'undefined') { 
+	throw new Error('myApi: This plugin requires jQuery'); 
+}
+
+$(function () {
+	console.log('myApi loading.');
+	
+	myApi.string.init();
+})
+
 
 /*
 	Browser related routines.
-	2018.8.24 By GuoJS
+	2018.8.24 GuoJS
+	
+	Add BROWSER_TYPE, type, isIE, availHeight 
+	2018.11.22 GuoJS
 */
 var myApi = myApi || {};
-myApi.browser = (function() {
+myApi.browser = ( function() {
 	var obj = {
-		clientHeight: function() {
-			console.log("Get browser height.");		
-			
-			return window.innerHeight;
+		BROWSER_TYPE: {
+			UNKNOWN: 'Unknown',
+			OPERA: 'Opera',
+			FIREFOX: 'Firefox',
+			CHROME: 'Chrome',
+			SAFARI: 'Safari',
+			EDGE: 'Edge',
+			WEIXIN: 'Weixin',
+			IE: 'IE'
 		},
+		type: function() { // Return the type of browser
+			console.log("Browser type");
+			var userAgent = navigator.userAgent; //»°µ√‰Ø¿¿∆˜µƒuserAgent◊÷∑˚¥Æ  
+			var isOpera = userAgent.indexOf("Opera") > -1; //≈–∂œ «∑ÒOpera‰Ø¿¿∆˜  
+			var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera; //≈–∂œ «∑ÒIE‰Ø¿¿∆˜  
+			var isIE11 = -1 < userAgent.indexOf("Trident") &&  -1 < userAgent.indexOf("rv") > -1 && !isIE;
+			var isEdge = userAgent.indexOf("Edge") > -1 && !isIE11; //≈–∂œ «∑ÒIEµƒEdge‰Ø¿¿∆˜  
+			var isWeixin = userAgent.toLowerCase().indexOf("micromessenger") > -1; // ≈–∂œ «∑ÒŒ¢–≈‰Ø¿¿∆˜
+			var isFF = userAgent.indexOf("Firefox") > -1; //≈–∂œ «∑ÒFirefox‰Ø¿¿∆˜  
+			var isSafari = userAgent.indexOf("Safari") > -1 && userAgent.indexOf("Chrome") == -1 && !isWeixin; //≈–∂œ «∑ÒSafari‰Ø¿¿∆˜  
+			var isChrome = userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1 && !isWeixin;; //≈–∂œChrome‰Ø¿¿∆˜  
+			var reIE = null;
+			var fIEVersion = null;
+			
+			try {
+				if (isIE) { // IE
+					 reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+					 reIE.test(userAgent);
+					 fIEVersion = parseFloat(RegExp["$1"]);
+					 if ((7 <= fIEVersion) && ( 11 >= fIEVersion)) return this.BROWSER_TYPE.IE + fIEVersion;
+					 else return this.BROWSER_TYPE.IE;
+				} else if (isIE11)
+					return this.BROWSER_TYPE.IE + "11";			
+				else if (isEdge) 
+					return this.BROWSER_TYPE.EDGE;			
+				else if (isOpera) 
+					return this.BROWSER_TYPE.OPERA;			
+				else if (isFF) 
+					return this.BROWSER_TYPE.FIREFOX;			
+				else if (isSafari) 
+					return this.BROWSER_TYPE.SAFARI;			
+				else if (isChrome) 
+					return this.BROWSER_TYPE.CHROME;		
+				else if (isWeixin)
+					return this.BROWSER_TYPE.WEIXIN;		
+				else
+					return this.BROWSER_TYPE.UNKNOWN;				
+			} catch(ex) {
+				throw ex;
+			} finally {
+				userAgent = null;  
+				isOpera = null;  
+				isIE = null;
+				isEdge = null;
+				isFF = null;
+				isSafari = null; 
+				isChrome = null;
+				reIE = null;
+				fIEVersion = null;
+			}		
+		},
+		isIE: function() { 
+			console.log("Is ie browser?");
+			var type = this.type();
+			
+			try {
+				if (-1 < type.indexOf(this.BROWSER_TYPE.IE))
+					return true;
+				else
+					return false;
+			} catch(ex) {
+				throw ex;
+				return false;
+			} finally {
+				type = null
+			}
+		},
+		availHeight: function() { // º∆À„µ±«∞‰Ø¿¿∆˜◊Ó¥ÛªØ«Èøˆœ¬ø…”√∏ﬂ∂»,≤ªπˆ∂Øµƒ«Èøˆœ¬
+			var type = '';
+			var height = 0;
+			var taskBarHeight = 40; // »ŒŒÒ¿∏∏ﬂ∂»
+			var screenTop = 0;
+			
+			try {
+				type = this.type();				
+				// alert(type);
+				// alert(this.isIE());
+				if (this.isIE()) { // IE
+					screenTop = 108; /* IE, window toolbar+ window menu∏ﬂ∂»*/
+					return screen.availHeight/*∆¡ƒª∑÷±Ê¬ £¨»•µÙ»ŒŒÒ¿∏£¨»•µÙµ±«∞¥∞ø⁄±ÍÃ‚¿∏∏ﬂ∂»*/ - screenTop/* Chrome caption+toolbar+menu∏ﬂ∂»*/;
+				} else if (this.BROWSER_TYPE.CHROME == type) { // Chrome
+					screenTop = 90; /* Chrome, window caption+ window menu + window menu∏ﬂ∂»*/
+					return screen.availHeight/*∆¡ƒª∑÷±Ê¬ */ - taskBarHeight - screenTop;
+				} else { // Other
+					screenTop = 90; /* Chrome, window caption+ window menu + window menu∏ﬂ∂»*/
+					return screen.availHeight/*∆¡ƒª∑÷±Ê¬ */ - taskBarHeight - screenTop;
+				}
+			} catch(e) {
+				throw e;
+			} finally {
+				type = null;
+				height = null;
+				taskBarHeight = null;
+				screenTop = null;
+			}
+		},
+		
+		language: function() {
+			console.log('Get browser language');
+			var type = this.type();
+			var DEFAULT_LANGUAGE = 'en';
+			var result = DEFAULT_LANGUAGE;
+			
+			try {
+				if (-1 < type.indexOf(this.BROWSER_TYPE.IE)) {
+					result = window.navigator.userLanguage.toLowerCase();
+				}
+				else {
+					result = window.navigator.language.toLowerCase();
+				}
+				
+				return result;
+			} catch(ex) {
+				result = DEFAULT_LANGUAGE;
+				return result;
+			} finally {
+				type = null;
+				DEFAULT_LANGUAGE = null;
+				result = null;
+			}
+		},
+		
+		isChinese: function() {
+			console.log('The language is chinese?');
+			
+			if (this.language() == 'zh-cn')
+				return true;
+			else
+				return false;
+		}
 	};
 	
 	return obj;
@@ -27,7 +172,10 @@ myApi.browser = (function() {
 
 /*
 	Common routines.
-	2018.8.6 By GuoJS
+	2018.8.6 GuoJS
+	
+	Add 
+	2018.11.22 GuoJS
 */
 var myApi = myApi || {};
 myApi.common = (function() {
@@ -47,6 +195,7 @@ myApi.common = (function() {
 			
 			return null == context || "" == context || "undefined" == context ? "" : context;  		
 		},
+		
 		checkMobile: function(value) {
 			console.log("Check mobile phone number.");		
 			console.log("value:" + value);
@@ -54,6 +203,7 @@ myApi.common = (function() {
 			
 			return reg.test(value);
 		},
+		
 		stopBubble: function(e) {
 			console.log("Stop bubble");
 
@@ -61,11 +211,114 @@ myApi.common = (function() {
 				e.stopPropagation()  
 			else  
 				window.event.cancelBubble = true 
-		},
+		}
 	};
 	
 	return obj;
 })();
+
+
+/*
+	Cookie
+	2018.11.22 GuoJS
+*/
+
+var myApi = myApi || {};
+myApi.cookie = (new (function () {
+	var maxage = 60*60*24*1000;
+    var path = '/';
+ 
+    var cookie = getCookie();
+ 
+    function getCookie(){
+        var cookie = {};
+        var all = document.cookie; console.log("cookie:" + all);
+        if(all === "")
+            return cookie;
+        var list = all.split("; ");
+        for(var i=0; i < list.length; i++){
+            var cookies = list[i];
+            var p = cookies.indexOf("=");
+            var name = cookies.substring(0,p);
+            var value = cookies.substring(p+1);
+            value = decodeURIComponent(value);
+            cookie[name] = value;
+        }
+        return cookie;
+    }
+ 
+    var keys = [];
+    for(var key in cookie)
+        keys.push(key);
+ 
+    this.length = keys.length;
+ 
+    this.key = function(n){
+		console.log("Get specified cookie;");
+		console.log("n:" + n);
+
+        if(n<0 || n >= keys.length)
+            return null;
+        return keys[n];
+    };
+ 
+    this.setItem = function(key, value){
+		console.log("Set cookie.");
+		console.log("key:" + key);
+		console.log("value:" + value);
+		
+        if(! (key in cookie)){
+            keys.push(key);
+            this.length++;
+        }
+ 
+        cookie[key] = value;
+        var cookies = key + "=" +encodeURIComponent(value);
+        if(maxage)
+            cookies += "; max-age=" + maxage;
+        if(path)
+            cookies += "; path=" + path;
+ 
+        document.cookie = cookies;
+    };
+ 
+    this.getItem = function(key){
+		console.log("Get cookie.");
+		console.log("key:" + key);
+
+        return "undefined" == typeof(cookie[key]) || null == cookie[key] ? "": cookie[key];
+    };
+ 
+    this.removeItem = function(key){
+		console.log("Remove cookie.");
+		console.log("key:" + key);
+
+        if(!(key in cookie))
+            return;
+ 
+        delete cookie[key];
+ 
+        for(var i=0; i<keys.length; i++){
+            if(keys[i] === key){
+                keys.splice(i, 1);
+                break;
+            }
+        }
+        this.length--;
+ 
+        document.cookie = key + "=; max-age=0" + "; path=" + path;;
+    };
+ 
+    this.clear = function(){
+		console.log("Clear cookie.");
+
+		for (var i=0; i<keys.length; i++)
+            document.cookie = keys[i] + "=; max-age=0" + "; path=" + path;
+        cookie = {};
+        keys = [];
+        this.length = 0;
+    };
+})());
 
 
 /*
@@ -106,7 +359,7 @@ myApi.number = (function(){
 				result = s;
 			
 			return result;
-		},
+		}
 	};
 	
 	return obj;
@@ -114,14 +367,15 @@ myApi.number = (function(){
 
 
 /*
-	Request api.
+	Ajax request.
 	2018.8.6 By GuoJS
 */
 
 var myApi = myApi || {};
 myApi.request = (function() {
 	var obj = {
-		requestTimeout: 10000, // ms
+		requestTimeout: 3000, // ms
+		
 		post: function(url, param, success, fail, timeout) {
 			console.log("Send a post request.");
 			console.log("url:" + url);
@@ -133,7 +387,7 @@ myApi.request = (function() {
 				requestTimeout = timeout;
 				
 			// Request
-			myApi.interaction.loading.show();
+			myApi.display.loading.show();
 			var ajaxRequest = $.ajax({ 
 				url: url, 
 				type: "POST",
@@ -158,13 +412,14 @@ myApi.request = (function() {
 						success(data);						
 				}, 
 				complete: function(XMLHttpRequest, status){ 
-					myApi.interaction.loading.hide();
+					myApi.display.loading.hide();
 			„ÄÄ„ÄÄ„ÄÄ„ÄÄif ('timeout' == status){ //Ë∂ÖÊó∂,statusËøòÊúâsuccess,errorÁ≠âÂÄºÁöÑÊÉÖÂÜµ
 						ajaxRequest.abort();
 					}
 				}
 			});  // ajax
 		},
+		
 		get: function(url, success, fail, timeout) {
 			console.log("Send a get request.");
 			console.log("url:" + url);
@@ -175,7 +430,7 @@ myApi.request = (function() {
 				requestTimeout = timeout;
 			
 			// Request
-			myApi.interaction.loading.show();
+			myApi.display.loading.show();
 			var ajaxRequest = $.ajax({ 
 				url: url, 
 				type: "GET",
@@ -199,13 +454,13 @@ myApi.request = (function() {
 						success(data);						
 				}, 
 				complete: function(XMLHttpRequest, status){ 
-					myApi.interaction.loading.hide();
+					myApi.display.loading.hide();
 			„ÄÄ„ÄÄ„ÄÄ„ÄÄif ('timeout' == status){ //Ë∂ÖÊó∂,statusËøòÊúâsuccess,errorÁ≠âÂÄºÁöÑÊÉÖÂÜµ
 						ajaxRequest.abort();
 					}
 				}
 			});  // ajax
-		},
+		}
 	};
 	
 	return obj;	
@@ -215,32 +470,70 @@ myApi.request = (function() {
 	2018.8.6 By GuoJS
 */
 var myApi = myApi || {};
-myApi.storage = (function(){
-	var obj = {
-		setItem: function(key, value){
-			console.log("Local storage set item.");
-			console.log("key:" + key);
-			console.log("value:" + value);
-			var storage = window.localStorage;
-			if (('object' != typeof(storage)) || (null == storage))
-				return false;
-			
-			storage.setItem(key, value);
-			return true;
-		},
-		
-		getItem: function(key) {
-			console.log("Local storage get item.");
-			console.log("key:" + key);
-			var storage = window.localStorage;
-			if (('object' != typeof(storage)) || (null == storage))
-				return null;
-
-			var value = storage.getItem(key); 
-			return "undefined" == typeof(value) || null == value ? "" : value;
-		},		
-	};
+myApi.storage = (new (function (){
+	var storage;
 	
+	if (window.localStorage) {
+		storage = window.localStorage;
+	} else {
+		storage = require('./cookie.js')();
+	}
+	
+    this.setItem = function(key, value){
+		storage.setItem(key, value);
+	}
+	
+	this.getItem = function(key) {
+		var value = storage.getItem(key); 
+		return "undefined" == typeof(value) || null == value ? "" : value;
+	}
+	
+	this.removeItem = function(key) {
+		storage.removeItem(key);
+	}
+
+	this.clear = function() {
+		storage.clear();
+	}
+})());
+
+
+/*
+	String routines
+	2018.11.22 GuoJS
+*/
+var myApi = myApi || {};
+myApi.string = ( function() {
+	var obj = {
+		init: function() {
+			console.log("Initialize myapi string library.");
+			
+			this.trim();
+		},
+
+		trim: function() {
+			console.log("Add trim routines.");
+			
+			if ('function' != typeof(String.trim)) {
+				String.prototype.trim = function () {
+					return this.replace(/(^\s*)|(\s*$)/g, "");
+				}
+			}
+
+			if ('function' != typeof(String.ltrim)) {
+				String.prototype.ltrim = function () {
+					return this.replace(/(^\s*)/g, "");
+				}
+			}
+
+			if ('function' != typeof(String.rtrim)) {
+				String.prototype.rtrim = function () {
+					return this.replace(/(\s*$)/g, "");
+				}
+			}
+		}		
+	};
+
 	return obj;
 })();
 
@@ -252,6 +545,74 @@ myApi.storage = (function(){
 var myApi = myApi || {};
 myApi.time = (function(){
 	var obj = {
+		formatDuration: function(value) {
+			console.log("Format duration:" + value);
+			
+			if ("number" != typeof(value))
+				return "";
+			if (0 > value)
+				return "";
+			
+			// Calculate
+			var temp = value;
+			var hour = (temp - temp % 3600) / 3600;
+			temp -= hour * 3600;
+			var minute = (temp - temp % 60) / 60;
+			temp -= minute * 60;
+			var second = temp;
+			
+			// Format
+			var result = ""
+			if (0 < hour)
+				result += hour + "Êó∂";
+			if ((0 < minute) || (0 < hour))
+				result += minute + "ÂàÜ";
+			result+= second + "Áßí";
+			
+			return result;
+		},		
+		
+		formatTime: function(time) { // Ê†ºÂºèÂåñÊó∂ÈíüÊòæÁ§∫
+			if (null == time) return "";
+			if (isNaN(time)) return "";
+			
+			var result = "";
+			result += time.getFullYear();
+			result += "-";
+			result += $.trim("" + (time.getMonth() + 1)).length < 2 ? "0" + (time.getMonth() + 1) : (time.getMonth() + 1);
+			result += "-";
+			result += $.trim("" + time.getDate()).length < 2 ? "0" + time.getDate() : time.getDate();
+			result += " ";
+			result += $.trim("" + time.getHours()).length < 2 ? "0" + time.getHours() : time.getHours();
+			result += ":";
+			result += $.trim("" + time.getMinutes()).length < 2 ? "0" + time.getMinutes() : time.getMinutes();
+
+			return result;
+		},
+		
+		formatDateString: function(dateString, sep) { // Ê†ºÂºèÂåñÊó•ÊúüÂ≠óÁ¨¶‰∏≤Ôºå‰ªéyyyyMMddÂà∞yyyy-MM-dd
+			console.log("Format date string");
+			console.log("dateString:" + dateString);
+			console.log("sep:" + sep);
+			
+			if (("string" != typeof(dateString)) || (8 != dateString.trim().length)) {
+				return "";
+			}
+			var temp = dateString.trim();
+			
+			var seperator = "-";
+			if (("string" == typeof(sep)) && (0 < sep.trim().length)) {
+				seperator = sep.trim();
+			}
+
+			var result = "";
+			result += temp.substring(0, 4);
+			result += seperator + temp.substring(4, 6);
+			result += seperator + temp.substring(6, 8);
+			
+			return result;
+		},
+		
 		formatDate: function(date, sep) {
 			var year = date.getFullYear();
 			var month = date.getMonth() + 1;
@@ -260,23 +621,27 @@ myApi.time = (function(){
 
 			return year + seperator + (10 > month ? "0" + month : month) + seperator + (10 > day ? "0" + day : day);  
 		},
-		formatDateString: function(dateString, sep) {
-			var seperator = ("undefined" == typeof(sep)) ? "-" : sep; 
-			
-			if (8 != dateString.length)
-				return "";
 
-			return dateString.substr(0, 4)
-					+ seperator + dateString.substr(4, 2)
-					+ seperator + dateString.substr(6, 2);  
+		addSeconds: function(time, seconds) { // Âú®Áé∞ÊúâÊó∂Èó¥‰∏äÊ∑ªÂä†ÁßíÊï∞
+			if (null == time) return null;
+			if (isNaN(time)) return null;
+			if (null == seconds) return null;
+			if (isNaN(seconds)) return null;
+			
+			var ms = time.getTime(); // ËΩ¨‰∏∫Êó∂Èó¥Êà≥
+			var timeAdded = new Date();
+			timeAdded.setTime(ms + seconds * 1000);
+			
+			return timeAdded;
 		},
+
 		addDays: function(date, days) {
 			var ms = date.getTime(); // ËΩ¨‰∏∫ÊØ´Áßí
 			var result = new Date();
 			result.setTime(ms + days * 24 * 3600 * 1000);
 			
 			return result;
-		},
+		}
 	};
 	
 	return obj;
@@ -302,7 +667,7 @@ myApi.wx = (function() {
 				timestamp: param.timestamp,
 				nonceStr: param.nonceStr, 
 				signature: param.signature,
-				jsApiList: ['chooseWXPay', 'chooseImage', 'uploadImage', 'scanQRCode'],
+				jsApiList: ['chooseWXPay', 'chooseImage', 'uploadImage', 'scanQRCode']
 			});
 			wx.ready(function(){
 				console.log("JSAPI ready.");
@@ -365,7 +730,7 @@ myApi.wx = (function() {
 					}
 				}
 			});			
-		}, // scan
+		} // scan
 		
 	};
 	
@@ -375,238 +740,35 @@ myApi.wx = (function() {
 
 
 /*
-	bill form routines.
-	2018.8.24 By GuoJS
-*/
-var myApi = myApi || {};
-myApi.interaction = myApi.interaction || {};
-myApi.interaction.bill = (function(){
-	var obj = {
-		init: function() {
-			console.log("Initialize bill form.");
-
-			// Adjust the bill form
-			$(".weui-tab__bd.bill-body").css("height", (myApi.browser.clientHeight() - 60) + "px");
-			$(".weui-tab__bd.bill-body .weui-tab__bd-item").css("height", (myApi.browser.clientHeight() - 60) + "px");	
-			$(".weui-tab__bd.bill-body .weui-tab__bd-item.list").css("height", (myApi.browser.clientHeight() - 60 - 50) + "px");	
-		},
-	};
-	
-	return obj;
-})();
-
-$(function() {
-	console.log("bill form ready!");
-	
-	myApi.interaction.bill.init();
-});
-
-/*
-	Critical message.
-	2018.8.22 By GuoJS
-*/
-
-var myApi = myApi || {};
-myApi.interaction = myApi.interaction || {};
-myApi.interaction.critical = (function(){
-	var obj = {
-		show: function(message) {
-			console.log("Show critical message.");
-			console.log("message:" + message);
-
-			// Remove element first
-			try {
-				document.body.removeChild(document.querySelector('div.critical-message'));
-			} catch (e) {
-			}
-
-			// Create element
-			var mask = document.createElement('div');
-			mask.classList.add('critical-message');
-			mask.classList.add('mask'); 
-			mask.classList.add('flex-column'); 
-
-			var dialog = document.createElement('div');
-			dialog.classList.add('dialog'); 
-			dialog.classList.add('flex-column'); 
-
-			var titleBar = document.createElement('div');
-			titleBar.classList.add('dialog-title'); 
-			titleBar.innerText = "ÊèêÁ§∫";
-			dialog.appendChild(titleBar);
-
-			var content = document.createElement('div');
-			content.classList.add('dialog-content'); 
-			content.innerText = "ËøôÊòØÊ†∑‰æã‰ø°ÊÅØ";
-			if (("string" == typeof(message)) && (0 < message.trim().length))
-				content.innerText = message;
-			dialog.appendChild(content);
-			
-			mask.appendChild(dialog);
-			document.body.appendChild(mask);			
-		},
-	};
-	return obj;
-})();
-
-
-/*
-	Input dialog.
-	2018.8.19 By GuoJS
-*/
-
-var myApi = myApi || {};
-myApi.interaction = myApi.interaction || {};
-myApi.interaction.input = (function(){
-	var obj = {
-		show: function(options, ok, cancel) {
-			console.log("Show input dialog.");			
-			var _this = this;
-
-			// Remove element first
-			try {
-				document.body.removeChild(document.querySelector('div.input-dialog'));
-			} catch (e) {
-			}
-
-			// Create element
-			var mask = document.createElement('div');
-			mask.classList.add('input-dialog');
-			mask.classList.add('mask'); 
-			mask.classList.add('flex-column'); 
-			/*
-			mask.onclick = function() {
-				_this.hide();
-				if ("function" == typeof(cancel)) 
-					cancel();
-			}
-			*/
-
-			var dialog = document.createElement('div');
-			dialog.classList.add('dialog'); 
-			dialog.classList.add('flex-column'); 
-
-			var titleBar = document.createElement('div');
-			titleBar.classList.add('dialog-title'); 
-			if (("string" == typeof(options.title)) && (0 < options.title.trim().length))
-				titleBar.innerText = options.title;
-			else
-				titleBar.innerText = "ËØ∑ËæìÂÖ•";
-			dialog.appendChild(titleBar);
-
-			var textArea = document.createElement('textarea');
-			textArea.classList.add('dialog-textarea'); 
-			if (("number" == typeof(options.maxLength)) && (0 < options.maxLength))
-				textArea.setAttribute("maxlength", options.maxLength);
-			dialog.appendChild(textArea);	
-			
-			var buttonBar = document.createElement('div');
-			buttonBar.classList.add('dialog-button-bar');
-			
-			var buttonCancel = document.createElement('div');
-			buttonCancel.classList.add('dialog-button');
-			buttonCancel.classList.add('dialog-button-cancel');
-			buttonCancel.classList.add('dialog-button-left');
-			buttonCancel.innerText = "ÂèñÊ∂à";
-			buttonCancel.style.width = "50%";
-			buttonCancel.onclick = function() {
-				_this.hide();
-				if ("function" == typeof(cancel)) 
-					cancel();
-			}
-			buttonBar.appendChild(buttonCancel);				
-
-			var buttonOk = document.createElement('div');
-			buttonOk.classList.add('dialog-button');
-			buttonOk.classList.add('dialog-button-ok');
-			buttonOk.classList.add('dialog-button-right');
-			buttonOk.innerText = "Á°ÆËÆ§";
-			buttonOk.style.width = "50%";
-			buttonOk.onclick = function() {
-				_this.hide();
-				var content = textArea.value;
-				console.log("content:" + content);
-				if ("function" == typeof(ok)) 
-					ok(content);
-			}
-			buttonBar.appendChild(buttonOk);				
-			
-			dialog.appendChild(buttonBar);	
-			
-			mask.appendChild(dialog);
-			document.body.appendChild(mask);			
-		},
-		hide: function() {
-			console.log("Hide input dialog.");
-
-			try {
-				document.body.removeChild(document.querySelector('div.input-dialog'));
-			} catch (e) {
-			}
-		},		
-	};
-	return obj;
-})();
-
-
-/*
 	Loading mask.
 	2018.8.6 By GuoJS
 */
 
 var myApi = myApi || {};
-myApi.interaction = myApi.interaction || {};
-myApi.interaction.loading = (function(){
+myApi.display = myApi.display || {};
+myApi.display.loading = (function(){
 	var obj = {
 		show: function() {
 			console.log("Show loading.");			
-			// Remove element first
-			try {
-				document.body.removeChild(document.querySelector('div.loading'));
-			} catch (e) {
-			}
+			
+			// Remove first
+			this.hide();
 
 			// Create element
 			var loading = document.createElement('div');
-			loading.classList.add('loading'); // Add style class
+			loading.setAttribute('class', 'myApi-loading'); // Add style class
 			document.body.appendChild(loading);			
 		},
+		
 		hide: function() {
 			console.log("Hide loading.");
 
 			try {
-				document.body.removeChild(document.querySelector('div.loading'));
+				document.body.removeChild(document.querySelector('div.myApi-loading'));
 			} catch (e) {
 			}
-		},		
+		}		
 	};
-	return obj;
-})();
-
-
-/*
-	Interaction other routines.
-	2018.8.6 By GuoJS
-*/
-
-var myApi = myApi || {};
-myApi.interaction = myApi.interaction || {};
-myApi.interaction.other = (function(){
-	var obj = {
-		hintNoMore: function() {
-			console.log("Show no more hint");
-			
-			$('.weui-loading').css("display", "none");
-			$('.weui-loadmore__tips').text("-- Ê≤°ÊúâÊõ¥Â§ö‰∫Ü --");
-		},
-		hintLoading: function() {
-			console.log("Show loading hint");
-			
-			$('.weui-loading').css("display", "");
-			$('.weui-loadmore__tips').text("-- ÊãºÂëΩÂä†ËΩΩ‰∏≠ --");
-		},
-	};
-	
 	return obj;
 })();
 

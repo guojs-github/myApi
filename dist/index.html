@@ -1,34 +1,63 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>Grass Demo</title>
+		<title>myApi Demo</title>
+		<link rel="shortcut icon" href="./images/logo-1.png" type="image/x-icon" />
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1 user-scalable=0">
+		<meta http-equiv=X-UA-Compatible content='IE=IE8,chrome=1'>
+		<META HTTP-EQUIV="pragma" CONTENT="no-cache"> 
+		<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, no-store, must-revalidate"> 
+		<META HTTP-EQUIV="expires" CONTENT="0">
+		<meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″ />
+
 		<!--引入样式-->
-    	<link rel="stylesheet" href="./css/index.css" />
-	
+    	<link type="text/css" rel="stylesheet" href="./css/index.css" />	
+    	<link type="text/css" rel="stylesheet" href="./css/myApi.css" />	
 	</head>
 	</head>
 
 	<body>
-		<div id="query-string" class="button">获取?参数</div>
-		<div id="extend" class="button">扩展json对象</div>
-		<div id="check-mobile" class="button">检查中国手机号</div>
-		<div id="format-duration" class="button">格式化剩余时长</div>
-		<div id="format-date" class="button">格式化日期</div>
-		<div id="toast" class="button">显示提示消息</div>
-		<div id="request" class="button">发送请求获取数据</div>
+		<div>myApi.browser</div>
 		<div id="browser-type" class="button">当前浏览器型号</div>
 		<div id="is-ie" class="button">是否IE？</div>
 		<div id="avail-height" class="button">浏览器显示区域高度</div>
-		<div id="format-time" class="button">格式化当前时间</div>
+		<div id="language" class="button">浏览器语言</div>
+		<div id="is-chinese" class="button">浏览器是否中文？</div>
+		<div>myApi.common</div>
+		<div id="query-string" class="button">获取?参数</div>
+		<div id="check-mobile" class="button">检查中国手机号</div>
+		<div id="bubble" class="button"><div>事件冒泡</div></div>
+		<div id="stop-bubble" class="button"><div>阻止事件冒泡</div></div>
+		<div>myApi.cookie</div>
 		<div id="cookie-set" class="button">设置几个cookie</div>
 		<div id="cookie-get" class="button">读取cookie</div>
 		<div id="cookie-remove" class="button">删除特定cookie</div>
 		<div id="cookie-clear" class="button">清除cookie</div>
-		<div id="storage-set" class="button">设置几个本地存储</div>
-		<div id="storage-get" class="button">读取本地存储</div>
-		<div id="storage-remove" class="button">删除特定本地存储</div>
+		<div>myApi.number</div>
+		<div id="format-amount" class="button">格式化金额</div>
+		<div>myApi.request</div>
+		<div id="request-get" class="button">GET请求</div>
+		<div id="request-post" class="button">POST请求</div>
+		<div>myApi.storage</div>
+		<div id="storage-set" class="button">设置几个本地存储变量</div>
+		<div id="storage-get" class="button">读取本地存储变量</div>
+		<div id="storage-remove" class="button">删除本地存储变量</div>
 		<div id="storage-clear" class="button">清除本地存储</div>
+		<div>myApi.string</div>
+		<div id="string-trim" class="button">移除字符串空格</div>
+		<div>myApi.time</div>
+		<div id="format-duration" class="button">格式化剩余时长</div>
+		<div id="format-date" class="button">当前日期</div>
+		<div id="format-time" class="button">当前时间</div>
+		<div id="format-date-string" class="button">格式化日期字符串</div>
+		<div id="add-seconds" class="button">X秒后的时间</div>
+		<div id="add-days" class="button">X天后的时间</div>
+		
+		<!--
+		<div id="toast" class="button">显示提示消息</div>
+		-->
 		<!--
 		<div>
 			<div>
@@ -47,11 +76,11 @@
 		-->
 
 		<!--引入插件-->
+		<script type="text/javascript" src="./js/jquery-1.7.2.min.js"></script>
 		<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=bxrk9NvT5ORyGv21aVUzSVrcn39DLpz6"></script>-->
-		<script type="text/javascript" src="./plugin/jquery/jquery-1.7.2.min.js"></script>
-
+	
 		<!--引入脚本-->
 		<script type="text/javascript" src="./js/index.js"></script>		
-		<script type="text/javascript" src="./js/grass.js"></script>
+		<script type="text/javascript" src="./js/myApi.js"></script>
 	</body>
 </html>

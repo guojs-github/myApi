@@ -9,32 +9,32 @@ var gulp		=require('gulp'),  				//gulp基础库
 
 gulp.task('default', ['clean'], function() {
 	// 将你的默认的任务代码放在这
-	 gulp.start('minify-js'); // 压缩js
+	gulp.start('minify-js'); 
 });
 
 gulp.task('clean', function() {
 	// 清除指定文件
 	del([
-		'./dist/js/myApi.js'
+		'./dist/js/myApi*.js'
+		, './dist/css/myApi*.css'
+		, './dist/image/*.*'
 	]);
 });
 
-gulp.task('minify-js', function() {
-	// 压缩js
+// 处理js
+gulp.task('minify-js', ['minify-css'], function() {
 	return gulp.src([ 									//被合并的js 
 				'./src/index.js'
 				, './src/common/browser.js' 
 				, './src/common/common.js' 
+				, './src/common/cookie.js' 
 				, './src/common/number.js' 
 				, './src/common/request.js' 
 				, './src/common/storage.js' 
+				, './src/common/string.js' 
 				, './src/common/time.js' 
 				, './src/common/wx.js' 
-				, './src/interaction/bill.js' 
-				, './src/interaction/critical.js' 
-				, './src/interaction/input.js' 
-				, './src/interaction/loading.js' 
-				, './src/interaction/other.js' 
+				, './src/display/loading.js' 
 			]) 
 			.pipe(concat('myApi.js'))   				//合并js
 			.pipe(gulp.dest('dist/js'))        			//输出
@@ -43,3 +43,20 @@ gulp.task('minify-js', function() {
 			.pipe(gulp.dest('dist/js'))            		//输出 
 			.pipe(notify({message:"myApi压缩完成"}));   //提示,windows下出的是气泡提示	
 });
+
+// 处理css
+gulp.task('minify-css', ['copy-image'], function(){
+   return gulp.src('./src/css/*.css')
+       .pipe(concat('myApi.css'))      					//合并css
+       .pipe(gulp.dest('dist/css'))           			//输出
+       .pipe(rename({suffix:'.min'}))         			//重命名
+       .pipe(minifycss())                    			//压缩
+       .pipe(gulp.dest('dist/css'))            			//输出
+});
+
+// 复制image
+gulp.task('copy-image',function(){
+   return gulp.src('./src/image/*.*')
+       .pipe(gulp.dest('dist/image'))           			//输出
+});
+

@@ -2,42 +2,58 @@
 	Test Entry
 	2017.4.25 GuoJS
 */
-var grass = window.grass;
-$(document).ready(function(){
-	console.log('ready');
+$(function () {
+	console.log('On load event');
 	init();
-});
+})
 
 function init() { // initialize
 	console.log("init");
+	
 	bind(); // Bind events
-	// lib.gis.baidu.init(); // Show map
 }
 
 function bind() {
 	console.log("bind");
 
-	bindQueryString();
-	bindExtend();
-	bindCheckMobile();
-	bindFormatDuration();
-	bindFormatDate();
-	bindToast();
-	bindRequest();
 	bindBrowserType();
 	bindIsIE();
 	bindAvailHeight();	
-	bindFormatTime();
-	bindAddSeconds();
+	bindLanguage();	
+	bindIsChinese();	
+
+	bindQueryString();
+	bindCheckMobile();
+	bindBubble();
+	bindStopBubble();
+
 	bindCookieSet();
 	bindCookieGet();
 	bindCookieRemove();
 	bindCookieClear();
+	
+	bindFormatAmount();
+
+	bindRequestGet();
+	bindRequestPost();
+
 	bindStorageSet();
 	bindStorageGet();
 	bindStorageRemove();
 	bindStorageClear();
+
+	bindStringTrim();
+
+	bindFormatDuration();
+	bindFormatDate();
+	bindFormatTime();
+	bindFormatDateString();
+	bindAddSeconds();
+	bindAddDays();
+	
 	/*
+	bindToast();
+	
 	bindGisLocate();
 	bindGisPathByAddresses();
 	bindGisPathByPoints();
@@ -45,43 +61,79 @@ function bind() {
 	*/
 }
 
-function bindQueryString() { // Get ? parameter
+// browser ////////////////////////////////////////
+
+function bindBrowserType() {
+	console.log("Bind browser type event.");
+
+	var el = $("#browser-type");
+	el.click(function () {
+		console.log("Browser type.");
+		
+		alert(myApi.browser.type());
+	});
+}
+
+function bindIsIE() {
+	console.log("Bind is ie event.");
+
+	var el = $("#is-ie");
+	el.click(function () {
+		console.log("Is ie type.");
+		
+		alert(myApi.browser.isIE());
+	});
+}
+
+function bindAvailHeight() {
+	console.log("Bind available height event.");
+
+	var el = $("#avail-height");
+	el.click(function () {
+		console.log("Available height type.");
+		
+		alert(myApi.browser.availHeight());
+	});
+}
+
+function bindLanguage() {
+	console.log("Bind browser language event.");
+
+	var el = $("#language");
+	el.click(function () {
+		console.log("Get browser language.");
+		
+		alert(myApi.browser.language());
+	});
+}
+
+function bindIsChinese() {
+	console.log("Bind browser language is chinese event.");
+
+	var el = $("#is-chinese");
+	el.click(function () {
+		console.log("Browser language is chinese?");
+		
+		alert(myApi.browser.isChinese());
+	});
+}
+
+// common //////////////////////////////////////
+
+function bindQueryString() {
 	console.log("Bind query string event.");
 
 	var el = $("#query-string");
 	el.click(function () {
-		console.log("Query string.");
-		var a = grass.common.queryString('a');
+		console.log("Get value of parameter a.");
+		var a = myApi.common.queryString('a');
 
 		console.log("a:" + decodeURI(a));
-		alert("a:" + decodeURI(a));
+		alert("【a】:" + decodeURI(a));
 	});
 }
 
-function bindExtend() { // Extend json object
-	console.log("Bind extend event.");
-
-	var el = $("#extend");
-	el.click(function () {
-		console.log("Extend json object.");
-		var a = {
-			value: "It's a value",
-		};
-		console.log("a:" + JSON.stringify(a));
-		alert("a:" + JSON.stringify(a));
-		var b = {
-			key: "It's a key",
-		};
-		console.log("b:" + JSON.stringify(b));
-		alert("b:" + JSON.stringify(b));
-
-		var c = grass.common.extend([a, b]);
-		console.log("c:" + JSON.stringify(c));
-		alert("c:" + JSON.stringify(c));
-	});
-}
-
-function bindCheckMobile() { // Check the mobile number is available
+function bindCheckMobile() {
 	console.log("Bind check mobile event.");
 
 	var el = $("#check-mobile");
@@ -89,18 +141,275 @@ function bindCheckMobile() { // Check the mobile number is available
 		console.log("Check mobile.");
 
 		var number = "12345678901"; 
-		var result = grass.common.checkMobile(number);
-		console.log("number " + number + ( true == result? " is a legal number" : " is a illegal number") );
-		alert("number " + number + ( true == result? " is a legal number" : " is a illegal number") );
+		var result = myApi.common.checkMobile(number);
+		var message = "number " + number + ( true == result? " is a legal number" : " is an illegal number");
+		console.log(message);
+		alert(message);
 
 		number = "13601825555"; 
-		result = grass.common.checkMobile(number);
-		console.log("number " + number + ( true == result? " is a legal number" : " is a illegal number") );
-		alert("number " + number + ( true == result? " is a legal number" : " is a illegal number") );
+		result = myApi.common.checkMobile(number);
+		message = "number " + number + ( true == result? " is a legal number" : " is an illegal number");
+		console.log(message);
+		alert(message);
 	});
 }
 
-function bindFormatDuration() { // format duration
+function bindBubble() {
+	console.log('Click event bubble demo');
+
+	var outter = $("#bubble");
+	outter.click(function () {
+		console.log('On outter click.');
+
+		alert('外层点击事件');
+	});
+	var inner = $("#bubble > div");
+	inner.click(function () {
+		console.log('On inner click.');
+		
+		alert('内层点击事件');
+	});	
+}
+
+function bindStopBubble() {
+	console.log('Click event stop bubble demo');
+
+	var outter = $("#stop-bubble");
+	outter.click(function () {
+		console.log('On outter click.');
+
+		alert('外层点击事件');
+	});
+	var inner = $("#stop-bubble > div");
+	inner.click(function () {
+		console.log('On inner click.');
+		
+		alert('内层点击事件');
+		myApi.common.stopBubble(inner);
+	});	
+}
+
+// cookie ////////////////////////////////////
+
+function bindCookieSet() {
+	console.log("Bind cookie set event.");
+
+	var el = $("#cookie-set");
+	el.click(function () {
+		console.log("Cookie set.");
+		
+		myApi.cookie.setItem("姓名", "小郭");
+		var now = new Date();
+		myApi.cookie.setItem("now", now);
+
+		alert("成功添加Cookie 姓名和now");
+	});
+}
+
+function bindCookieGet() {
+	console.log("Bind cookie get event.");
+
+	var el = $("#cookie-get");
+	el.click(function () {
+		console.log("Cookie get.");
+		var prompt = '';
+		
+		var name = myApi.cookie.getItem("姓名");
+		prompt = '姓名:' + name;
+		var now = myApi.cookie.getItem("now");
+		prompt += '\nnow:' + now;
+
+		console.log(prompt);
+		alert(prompt);
+	});
+}
+
+function bindCookieRemove() {
+	console.log("Bind cookie remove event.");
+
+	var el = $("#cookie-remove");
+	el.click(function () {
+		console.log("Cookie remove.");
+		
+		myApi.cookie.removeItem("now");
+		alert("成功移除Cookie now");
+	});
+}
+
+function bindCookieClear() {
+	console.log("Bind cookie clear event.");
+
+	var el = $("#cookie-clear");
+	el.click(function () {
+		console.log("Cookie clear.");
+		
+		myApi.cookie.clear();
+		alert("成功清空Cookie");
+	});
+}
+
+// number /////////////////////////////////////
+
+function bindFormatAmount() {
+	console.log('Bind format amount event.');
+
+	var el = $("#format-amount");
+	el.click(function () {
+		console.log("Format amount.");
+		var result = '';
+		
+		var number = 0;
+		result = number + '转换为' + myApi.number.formatAmount(number);
+
+		number = 9;
+		result += '\n' + number + '转换为' + myApi.number.formatAmount(number);
+
+		number = 999999999;
+		result += '\n' + number + '转换为' + myApi.number.formatAmount(number);
+
+		number = -0.1;
+		result += '\n' + number + '转换为' + myApi.number.formatAmount(number);
+
+		alert(result);
+	});
+}
+
+// request ///////////////////////////////////////
+
+function bindRequestGet() {
+	console.log("Bind request get event.");
+
+	var el = $("#request-get");
+	el.click(function () {
+		console.log("Request get.");
+		var url = "./jsp/userInfo.jsp";
+		myApi.request.get(				
+			url
+			, function (data) {
+				console.log("Request get success.");
+				console.log("Request get data:" + JSON.stringify(data));
+				
+				alert('Request get success.\n' + JSON.stringify(data));
+			}
+			, function (request, status, err) {
+				console.log("Request get fail.");
+
+				alert('Request get fail.');
+			}
+			, 3000
+		);
+	});
+}
+
+function bindRequestPost() {
+	console.log("Bind request post event.");
+
+	var el = $("#request-post");
+	el.click(function () {
+		console.log("Request post.");
+		
+		var url = "./jsp/userInfo.jsp";
+		myApi.request.post(				
+			url
+			, {}
+			, function (data) {
+				console.log("Request post success.");
+				console.log("Request post data:" + JSON.stringify(data));
+				
+				alert('Request post success.\n' + JSON.stringify(data));
+			}
+			, function (request, status, err) {
+				console.log("Request post fail.");
+
+				alert('Request post fail.');
+			}
+			, 3000
+		);
+	});
+}
+
+// storage ///////////////////////////////////
+
+function bindStorageSet() {
+	console.log("Bind storage set event.");
+
+	var el = $("#storage-set");
+	el.click(function () {
+		console.log("Storage set.");
+		
+		myApi.storage.setItem("姓名", "小郭");
+		var now = new Date();
+		myApi.storage.setItem("now", now);
+
+		alert("成功添加 姓名和now");
+	});
+}
+
+
+function bindStorageGet() {
+	console.log("Bind storage get event.");
+
+	var el = $("#storage-get");
+	el.click(function () {
+		console.log("Storage get.");
+		
+		var prompt = '';
+		
+		var name = myApi.storage.getItem("姓名");
+		prompt = '姓名:' + name;
+		var now = myApi.storage.getItem("now");
+		prompt += '\nnow:' + now;
+
+		console.log(prompt);
+		alert(prompt);
+	});
+}
+
+function bindStorageRemove() {
+	console.log("Bind storage remove event.");
+
+	var el = $("#storage-remove");
+	el.click(function () {
+		console.log("Storage remove.");
+		
+		myApi.storage.removeItem("now");
+		alert("成功移除 now");
+	});
+}
+
+function bindStorageClear() {
+	console.log("Bind storage clear event.");
+
+	var el = $("#storage-clear");
+	el.click(function () {
+		console.log("Storage clear.");
+		
+		myApi.storage.clear();
+		alert("成功清空本地存储");
+	});
+}
+
+function bindStringTrim() {
+	console.log("Bind string trim event.");
+
+	var el = $("#string-trim");
+	el.click(function () {
+		console.log("String trim.");
+		var temp = '  演示字符串  ';
+		var prompt = '';
+		
+		prompt = 'trim("' + temp + '") = "' + temp.trim() + '"';
+		prompt += '\nltrim("' + temp + '") = "' + temp.ltrim() + '"';
+		prompt += '\nrtrim("' + temp + '") = "' + temp.rtrim() + '"';
+		
+		alert(prompt);
+	});
+}
+
+
+// time //////////////////////////////////////////////////
+
+function bindFormatDuration() {
 	console.log("Bind format duration event.");
 
 	var el = $("#format-duration");
@@ -108,25 +417,91 @@ function bindFormatDuration() { // format duration
 		console.log("Format duration.");
 		
 		var duration = 4567;
-		var prompt = grass.time.formatDuration(duration);
+		var prompt = duration + '秒转换为' + myApi.time.formatDuration(duration);
 		console.log(prompt);
 		alert(prompt);
 	});
 }
 
-function bindFormatDate() { // format date
+function bindFormatDate() {
 	console.log("Bind format date event.");
 
 	var el = $("#format-date");
 	el.click(function () {
 		console.log("Format date.");
 		
+		var now = new Date();
+		alert('当前日期' + myApi.time.formatDate(now));
+	});
+}
+
+function bindFormatTime() {
+	console.log("Bind format time event.");
+
+	var el = $("#format-time");
+	el.click(function () {
+		console.log("Format time.");
+		
+		var now = new Date();
+		alert('当前时间' + myApi.time.formatTime(now));
+	});
+}
+
+function bindFormatDateString() {
+	console.log("Bind format date string event.");
+
+	var el = $("#format-date-string");
+	el.click(function () {
+		console.log("Format date string.");
+		
 		var date = "20180814";
-		var prompt = grass.time.formatDateString(date);
+		var prompt = '日期字符串' + date + '转换为' + myApi.time.formatDateString(date);
 		console.log(prompt);
 		alert(prompt);
 	});
 }
+
+function bindAddSeconds() {
+	console.log("Bind add seconds event.");
+
+	var el = $("#add-seconds");
+	el.click(function () {
+		console.log("Add seconds.");
+		
+		var now = new Date();
+		var seconds = 1800;
+		var prompt = seconds + '秒后时间是' + myApi.time.formatTime(myApi.time.addSeconds(now, seconds));		
+		seconds = -10;
+		prompt += '\n' + seconds + '秒后时间是' + myApi.time.formatTime(myApi.time.addSeconds(now, seconds));
+		seconds = -(24 * 3600);
+		prompt += '\n' + seconds + '秒后时间是' + myApi.time.formatTime(myApi.time.addSeconds(now, seconds));
+
+		alert(prompt);
+	});
+}
+
+function bindAddDays() {
+	console.log("Bind add days event.");
+
+	var el = $("#add-days");
+	el.click(function () {
+		console.log("Add days.");
+		
+		var now = new Date();
+		var days = 1;
+		var prompt = days + '天后时间是' + myApi.time.formatTime(myApi.time.addDays(now, days));		
+		days = 10;
+		prompt += '\n' + days + '天后时间是' + myApi.time.formatTime(myApi.time.addDays(now, days));
+		days = -1;
+		prompt += '\n' + days + '天后时间是' + myApi.time.formatTime(myApi.time.addDays(now, days));
+		days = -31;
+		prompt += '\n' + days + '天后时间是' + myApi.time.formatTime(myApi.time.addDays(now, days));
+
+		alert(prompt);
+	});
+}
+
+/*
 
 function bindToast() { // toast
 	console.log("Bind toast event.");
@@ -139,219 +514,8 @@ function bindToast() { // toast
 	});
 }
 
-function bindRequest() { // send request 2 server
-	console.log("Bind request event.");
 
-	var el = $("#request");
-	el.click(function () {
-		console.log("request.");
-		
-		// var url = "/grass/jsp/userInfo.jsp";
-		var url = "https://www.mdero.com/esplatform/restlet/wxapprs/wx/bindUserDynamic";
-		var params = {
-			phoneNumber: '13601825776',
-		};
-		grass.mobile.loading.show("/grass/images/loading.gif");	
-		if (!grass.browser.isIE()) {
-			grass.request.post(url, params).then(
-				function(data) {
-					grass.mobile.loading.hide();
-					console.log("Request test success.");
-					console.log("data:" + data);
-				},
-				function(message) {
-					grass.mobile.loading.hide();
-					console.log("Request test fail.");
-					console.log("message:" + message);
-				}
-			);
-		} else {
-			grass.request.requestOld(
-				url,
-				'POST',
-				{},
-				function(data) {
-					grass.mobile.loading.hide();
-					console.log("Request test success.");
-					console.log("Request test data:" + JSON.stringify(data));
-				},
-				function(request, status, err) {
-					grass.mobile.loading.hide();
-					console.log("Request test fail.");
-				}
-			);
-		}
-		
-	});
-}
-
-function bindBrowserType() {
-	console.log("Bind browser type event.");
-
-	var el = $("#browser-type");
-	el.click(function () {
-		console.log("Browser type.");
-		
-		alert(grass.browser.type());
-	});
-}
-
-function bindIsIE() {
-	console.log("Bind is ie event.");
-
-	var el = $("#is-ie");
-	el.click(function () {
-		console.log("Is ie type.");
-		
-		alert(grass.browser.isIE());
-	});
-}
-
-
-function bindAvailHeight() {
-	console.log("Bind available height event.");
-
-	var el = $("#avail-height");
-	el.click(function () {
-		console.log("Available height type.");
-		
-		alert(grass.browser.availHeight());
-	});
-}
-
-function bindFormatTime() {
-	console.log("Bind format time event.");
-
-	var el = $("#format-time");
-	el.click(function () {
-		console.log("Format time.");
-		
-		var now = new Date();
-		alert(grass.time.formatTime(now));
-	});
-}
-
-function bindAddSeconds() {
-	console.log("Bind add seconds event.");
-
-	var el = $("#add-seconds");
-	el.click(function () {
-		console.log("Add seconds.");
-		
-		var now = new Date();
-		alert(grass.time.formatTime(grass.time.addSeconds(now, 1800)));
-	});
-}
-
-function bindCookieSet() {
-	console.log("Bind cookie set event.");
-
-	var el = $("#cookie-set");
-	el.click(function () {
-		console.log("Cookie set.");
-		
-		grass.cookie.setItem("姓名", "小郭");
-		var now = new Date();
-		grass.cookie.setItem("now", now);
-
-		alert("Cookie set");
-	});
-}
-
-function bindCookieGet() {
-	console.log("Bind cookie get event.");
-
-	var el = $("#cookie-get");
-	el.click(function () {
-		console.log("Cookie get.");
-		
-		let name = grass.cookie.getItem("姓名");
-		console.log("姓名:" + name);
-		let now = grass.cookie.getItem("now");
-		console.log("now:" + now);
-
-		alert("Cookie get");
-	});
-}
-
-function bindStorageSet() {
-	console.log("Bind storage set event.");
-
-	var el = $("#storage-set");
-	el.click(function () {
-		console.log("Storage set.");
-		
-		grass.storage.setItem("姓名", "小郭");
-		var now = new Date();
-		grass.storage.setItem("now", now);
-
-		alert("Storage set");
-	});
-}
-
-function bindCookieRemove() {
-	console.log("Bind cookie remove event.");
-
-	var el = $("#cookie-remove");
-	el.click(function () {
-		console.log("Cookie remove.");
-		
-		grass.cookie.removeItem("now");
-		alert("Cookie removed");
-	});
-}
-
-function bindCookieClear() {
-	console.log("Bind cookie clear event.");
-
-	var el = $("#cookie-clear");
-	el.click(function () {
-		console.log("Cookie clear.");
-		
-		grass.cookie.clear();
-		alert("Cookie cleared");
-	});
-}
-
-function bindStorageGet() {
-	console.log("Bind storage get event.");
-
-	var el = $("#storage-get");
-	el.click(function () {
-		console.log("Storage get.");
-		
-		let name = grass.storage.getItem("姓名");
-		console.log("姓名:" + name);
-		let now = grass.storage.getItem("now");
-		console.log("now:" + now);
-
-		alert("Storage get");
-	});
-}
-
-function bindStorageRemove() {
-	console.log("Bind storage remove event.");
-
-	var el = $("#storage-remove");
-	el.click(function () {
-		console.log("Storage remove.");
-		
-		grass.storage.removeItem("now");
-		alert("Storage removed");
-	});
-}
-
-function bindStorageClear() {
-	console.log("Bind storage clear event.");
-
-	var el = $("#storage-clear");
-	el.click(function () {
-		console.log("Storage clear.");
-		
-		grass.storage.clear();
-		alert("Storage cleared");
-	});
-}
+*/
 
 /*
 function bindGisLocate() { // Bind locate position on map event

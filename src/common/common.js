@@ -1,6 +1,9 @@
 /*
 	Common routines.
-	2018.8.6 By GuoJS
+	2018.8.6 GuoJS
+	
+	Add 
+	2018.11.22 GuoJS
 */
 var myApi = myApi || {};
 myApi.common = (function() {
@@ -20,6 +23,7 @@ myApi.common = (function() {
 			
 			return null == context || "" == context || "undefined" == context ? "" : context;  		
 		},
+		
 		checkMobile: function(value) {
 			console.log("Check mobile phone number.");		
 			console.log("value:" + value);
@@ -27,6 +31,7 @@ myApi.common = (function() {
 			
 			return reg.test(value);
 		},
+		
 		stopBubble: function(e) {
 			console.log("Stop bubble");
 
@@ -34,7 +39,7 @@ myApi.common = (function() {
 				e.stopPropagation()  
 			else  
 				window.event.cancelBubble = true 
-		},
+		}
 	};
 	
 	return obj;

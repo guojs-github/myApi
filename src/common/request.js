@@ -1,12 +1,13 @@
 /*
-	Request api.
+	Ajax request.
 	2018.8.6 By GuoJS
 */
 
 var myApi = myApi || {};
 myApi.request = (function() {
 	var obj = {
-		requestTimeout: 10000, // ms
+		requestTimeout: 3000, // ms
+		
 		post: function(url, param, success, fail, timeout) {
 			console.log("Send a post request.");
 			console.log("url:" + url);
@@ -18,7 +19,7 @@ myApi.request = (function() {
 				requestTimeout = timeout;
 				
 			// Request
-			myApi.interaction.loading.show();
+			myApi.display.loading.show();
 			var ajaxRequest = $.ajax({ 
 				url: url, 
 				type: "POST",
@@ -43,13 +44,14 @@ myApi.request = (function() {
 						success(data);						
 				}, 
 				complete: function(XMLHttpRequest, status){ 
-					myApi.interaction.loading.hide();
+					myApi.display.loading.hide();
 			　　　　if ('timeout' == status){ //超时,status还有success,error等值的情况
 						ajaxRequest.abort();
 					}
 				}
 			});  // ajax
 		},
+		
 		get: function(url, success, fail, timeout) {
 			console.log("Send a get request.");
 			console.log("url:" + url);
@@ -60,7 +62,7 @@ myApi.request = (function() {
 				requestTimeout = timeout;
 			
 			// Request
-			myApi.interaction.loading.show();
+			myApi.display.loading.show();
 			var ajaxRequest = $.ajax({ 
 				url: url, 
 				type: "GET",
@@ -84,13 +86,13 @@ myApi.request = (function() {
 						success(data);						
 				}, 
 				complete: function(XMLHttpRequest, status){ 
-					myApi.interaction.loading.hide();
+					myApi.display.loading.hide();
 			　　　　if ('timeout' == status){ //超时,status还有success,error等值的情况
 						ajaxRequest.abort();
 					}
 				}
 			});  // ajax
-		},
+		}
 	};
 	
 	return obj;	

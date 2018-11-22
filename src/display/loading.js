@@ -4,30 +4,29 @@
 */
 
 var myApi = myApi || {};
-myApi.interaction = myApi.interaction || {};
-myApi.interaction.loading = (function(){
+myApi.display = myApi.display || {};
+myApi.display.loading = (function(){
 	var obj = {
 		show: function() {
 			console.log("Show loading.");			
-			// Remove element first
-			try {
-				document.body.removeChild(document.querySelector('div.loading'));
-			} catch (e) {
-			}
+			
+			// Remove first
+			this.hide();
 
 			// Create element
 			var loading = document.createElement('div');
-			loading.classList.add('loading'); // Add style class
+			loading.setAttribute('class', 'myApi-loading'); // Add style class
 			document.body.appendChild(loading);			
 		},
+		
 		hide: function() {
 			console.log("Hide loading.");
 
 			try {
-				document.body.removeChild(document.querySelector('div.loading'));
+				document.body.removeChild(document.querySelector('div.myApi-loading'));
 			} catch (e) {
 			}
-		},		
+		}		
 	};
 	return obj;
 })();
