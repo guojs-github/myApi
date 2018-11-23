@@ -10,7 +10,16 @@ $(function () {
 function init() { // initialize
 	console.log("init");
 	
+	ref();
 	bind(); // Bind events
+}
+
+function ref() {
+	console.log('Add reference');
+	
+	myApi.common.ref('css', './css/index.css');
+	myApi.common.ref('css', './css/myApi.css');
+	myApi.common.ref('js', './js/not-found.js');
 }
 
 function bind() {
@@ -50,6 +59,9 @@ function bind() {
 	bindFormatDateString();
 	bindAddSeconds();
 	bindAddDays();
+
+	bindLoading();
+	bindToast();
 	
 	/*
 	bindToast();
@@ -498,6 +510,40 @@ function bindAddDays() {
 		prompt += '\n' + days + '天后时间是' + myApi.time.formatTime(myApi.time.addDays(now, days));
 
 		alert(prompt);
+	});
+}
+
+// 控件展示 ////////////////////////////////
+function bindLoading () {
+	console.log("Bind loading event.");
+
+	var el = $("#loading");
+	el.click(function () {
+		console.log("Loading.");
+		
+		myApi.display.loading.show();
+		setTimeout(
+			function () {
+				myApi.display.loading.hide();
+			}
+			, 3000
+		);
+	});
+}
+
+function bindToast() {
+	console.log("Bind toast event.");
+
+	var el = $("#toast");
+	el.click(function () {
+		console.log("Toast.");
+		
+		myApi.display.toast.show({
+			message: '你好！这是一条演示消息。你能看到么？',
+			complete: function () {
+				console.log('Toast complete');
+			}
+		});
 	});
 }
 

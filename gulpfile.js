@@ -35,6 +35,7 @@ gulp.task('minify-js', ['minify-css'], function() {
 				, './src/common/time.js' 
 				, './src/common/wx.js' 
 				, './src/display/loading.js' 
+				, './src/display/toast.js' 
 			]) 
 			.pipe(concat('myApi.js'))   				//合并js
 			.pipe(gulp.dest('dist/js'))        			//输出

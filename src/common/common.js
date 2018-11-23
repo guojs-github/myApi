@@ -39,6 +39,37 @@ myApi.common = (function() {
 				e.stopPropagation()  
 			else  
 				window.event.cancelBubble = true 
+		},
+		
+		ref: function(type, file) {
+			console.log('Add file reference to page');
+			
+			// Check
+			if ((typeof type != 'string') || (type.trim().length <=0)) {
+				console.log('Invalid reference type.');
+				return;
+			}
+			console.log('type:' + type);
+			if ((typeof file != 'string') || (file.trim().length <=0)) {
+				console.log('Invalid reference file name.');
+				return;
+			}
+			console.log('file:' + file);
+			
+			// Update
+			var stamp = myApi.time.formatTime(new Date());
+			if (type == 'css') {
+				var link = document.createElement("link");
+				link.setAttribute('type', 'text/css');
+				link.setAttribute('rel', 'stylesheet');
+				link.setAttribute('href', file + '?t=' + stamp);
+				$("head")[0].appendChild(link);
+			} else if (type == 'js') {
+				var script = document.createElement("script");
+				script.setAttribute('type', 'text/javascript');
+				script.setAttribute('src', file + '?t=' + stamp);
+				$("body")[0].appendChild(script);
+			}
 		}
 	};
 	

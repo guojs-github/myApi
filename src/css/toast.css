@@ -1,25 +1,4 @@
 /*
-	Loading mask style
-	2018.11.22 GuoJS
-*/
-
-.myApi-loading{
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	z-index: 1000;
-
-	background-image: url(../image/loading.gif);
-	background-repeat: no-repeat;
-	background-position: center;
-	background-color: black;
-	opacity: 0.3;
-	filter:alpha(opacity=30);	
-}
-
-/*
 	Toast style
 	2018.11.23 GuoJS
 */
