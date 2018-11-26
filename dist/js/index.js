@@ -62,6 +62,7 @@ function bind() {
 
 	bindLoading();
 	bindToast();
+	bindCalendar();
 	
 	/*
 	bindToast();
@@ -547,21 +548,15 @@ function bindToast() {
 	});
 }
 
-/*
+function bindCalendar () {
+	console.log('Bind calendar control');
 
-function bindToast() { // toast
-	console.log("Bind toast event.");
-
-	var el = $("#toast");
-	el.click(function () {
-		console.log("Toast.");
-		
-		grass.mobile.toast.show("测试消息", 5000);
+	var calendarPicker = $('.calendar-sample');
+	calendarPicker.dcalendarpicker({
+		format:'yyyy-mm-dd'
 	});
 }
 
-
-*/
 
 /*
 function bindGisLocate() { // Bind locate position on map event

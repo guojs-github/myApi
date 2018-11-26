@@ -27,6 +27,23 @@ body {
 	background-color:lightgray;
 }
 
+.input {
+	display:inline-block;
+	vertical-align: top;
+	padding: 0 5px;
+
+	width: auto;
+	min-width: 150px;
+	height: 30px;
+	line-height: 30px;
+	text-align: left;
+	margin: 2px;
+	background-color:white;
+	border-radius: 2px;
+	border: 1px solid lightgray;
+	cursor: pointer;
+}
+
 #map-area {
 	height: 600px !important;
 }
