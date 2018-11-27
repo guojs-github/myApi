@@ -10,16 +10,7 @@ $(function () {
 function init() { // initialize
 	console.log("init");
 	
-	ref();
 	bind(); // Bind events
-}
-
-function ref() {
-	console.log('Add reference');
-	
-	myApi.common.ref('css', './css/index.css');
-	myApi.common.ref('css', './css/myApi.css');
-	myApi.common.ref('js', './js/not-found.js');
 }
 
 function bind() {

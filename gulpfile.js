@@ -25,6 +25,7 @@ gulp.task('clean', function() {
 gulp.task('minify-js', ['minify-css'], function() {
 	return gulp.src([ 									//被合并的js 
 				'./src/index.js'
+				, './src/common/array.js' 
 				, './src/common/browser.js' 
 				, './src/common/common.js' 
 				, './src/common/cookie.js' 

@@ -18,6 +18,7 @@ myApi.browser = ( function() {
 			WEIXIN: 'Weixin',
 			IE: 'IE'
 		},
+		
 		type: function() { // Return the type of browser
 			console.log("Browser type");
 			var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
@@ -69,6 +70,7 @@ myApi.browser = ( function() {
 				fIEVersion = null;
 			}		
 		},
+		
 		isIE: function() { 
 			console.log("Is ie browser?");
 			var type = this.type();
@@ -85,6 +87,7 @@ myApi.browser = ( function() {
 				type = null
 			}
 		},
+		
 		availHeight: function() { // 计算当前浏览器最大化情况下可用高度,不滚动的情况下
 			var type = '';
 			var height = 0;

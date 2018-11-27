@@ -15,119 +15,15 @@
 if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plugin requires jQuery'); }
  
 +function ($) {
-	// 浏览器信息
-	var browser = ( function() {
-		var obj = {
-			BROWSER_TYPE: {
-				UNKNOWN: 'Unknown',
-				OPERA: 'Opera',
-				FIREFOX: 'Firefox',
-				CHROME: 'Chrome',
-				SAFARI: 'Safari',
-				EDGE: 'Edge',
-				WEIXIN: 'Weixin',
-				IE: 'IE'
-			},
-			
-			type: function() { // Return the type of browser
-				console.log("Browser type");
-				var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
-				var isOpera = userAgent.indexOf("Opera") > -1; //判断是否Opera浏览器  
-				var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera; //判断是否IE浏览器  
-				var isIE11 = -1 < userAgent.indexOf("Trident") &&  -1 < userAgent.indexOf("rv") > -1 && !isIE;
-				var isEdge = userAgent.indexOf("Edge") > -1 && !isIE11; //判断是否IE的Edge浏览器  
-				var isWeixin = userAgent.toLowerCase().indexOf("micromessenger") > -1; // 判断是否微信浏览器
-				var isFF = userAgent.indexOf("Firefox") > -1; //判断是否Firefox浏览器  
-				var isSafari = userAgent.indexOf("Safari") > -1 && userAgent.indexOf("Chrome") == -1 && !isWeixin; //判断是否Safari浏览器  
-				var isChrome = userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1 && !isWeixin;; //判断Chrome浏览器  
-				var reIE = null;
-				var fIEVersion = null;
-				
-				try {
-					if (isIE) { // IE
-						 reIE = new RegExp("MSIE (\\d+\\.\\d+);");
-						 reIE.test(userAgent);
-						 fIEVersion = parseFloat(RegExp["$1"]);
-						 if ((7 <= fIEVersion) && ( 11 >= fIEVersion)) return this.BROWSER_TYPE.IE + fIEVersion;
-						 else return this.BROWSER_TYPE.IE;
-					} else if (isIE11)
-						return this.BROWSER_TYPE.IE + "11";			
-					else if (isEdge) 
-						return this.BROWSER_TYPE.EDGE;			
-					else if (isOpera) 
-						return this.BROWSER_TYPE.OPERA;			
-					else if (isFF) 
-						return this.BROWSER_TYPE.FIREFOX;			
-					else if (isSafari) 
-						return this.BROWSER_TYPE.SAFARI;			
-					else if (isChrome) 
-						return this.BROWSER_TYPE.CHROME;		
-					else if (isWeixin)
-						return this.BROWSER_TYPE.WEIXIN;		
-					else
-						return this.BROWSER_TYPE.UNKNOWN;				
-				} catch(ex) {
-					throw ex;
-				} finally {
-					userAgent = null;  
-					isOpera = null;  
-					isIE = null;
-					isEdge = null;
-					isFF = null;
-					isSafari = null; 
-					isChrome = null;
-					reIE = null;
-					fIEVersion = null;
-				}		
-			},
-			
-			language: function() {
-				console.log('Get browser language');
-				var type = this.type();
-				var DEFAULT_LANGUAGE = 'en';
-				var result = DEFAULT_LANGUAGE;
-				
-				try {
-					if (-1 < type.indexOf(this.BROWSER_TYPE.IE)) {
-						result = window.navigator.userLanguage.toLowerCase();
-					}
-					else {
-						result = window.navigator.language.toLowerCase();
-					}
-					
-					return result;
-				} catch(ex) {
-					result = DEFAULT_LANGUAGE;
-					return result;
-				} finally {
-					type = null;
-					DEFAULT_LANGUAGE = null;
-					result = null;
-				}
-			},
-			
-			isChinese: function() {
-				console.log('The language is chinese?');
-				
-				if (this.language() == 'zh-cn')
-					return true;
-				else
-					return false;
-			}
-		};
-		
-		return obj;
-	})();
-	
-	// 语言判断
-	console.log('Is chinese?' + browser.isChinese());
+	// Is chinese?
+	console.log('Is chinese?' + myApi.browser.isChinese());
 	
 	Date.prototype.getDays = function() { return new Date(this.getFullYear(), this.getMonth() + 1, 0).getDate(); };
 	
 	var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
 		short_months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
 		daysofweek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-	if (browser.isChinese()) {
+	if (myApi.browser.isChinese()) {
 		months = ['1','2','3','4','5','6','7','8','9','10','11','12'];
 		short_months = ['1','2','3','4','5','6','7','8','9','10','11','12'];
 		daysofweek = ['周日','周一','周二','周三','周四','周五','周六'];
@@ -294,23 +190,23 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 
 			that.calendar.empty();
 			var sysDate = "Today: " + daysofweek[that.today.getDay()] + ", " + months[that.today.getMonth()] + " " + that.today.getDate() + ", " + that.today.getFullYear();
-			if (browser.isChinese()) {
+			if (myApi.browser.isChinese()) {
 				sysDate = "今日: " + that.today.getFullYear() + '年' + months[that.today.getMonth()] + '月' + that.today.getDate() + '日, ' + daysofweek[that.today.getDay()] ;
 			}
 			if(mode === "days") {
 				if(that.options.mode === 'calendar') {
 					that.tHead = $('<thead><tr><th id="prev">&lsaquo;</th><th colspan="5" id="currM"></th><th id="next">&rsaquo;</th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead>');
-					if (browser.isChinese()) {
+					if (myApi.browser.isChinese()) {
 						that.tHead = $('<thead><tr><th id="prev">&lsaquo;</th><th colspan="5" id="currM"></th><th id="next">&rsaquo;</th></tr><tr><th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th></tr></thead>');
 					}
 				} else if (that.options.mode === 'datepicker') {
 					that.tHead = $('<thead><tr><th id="prev">&lsaquo;</th><th colspan="5" id="currM"></th><th id="next">&rsaquo;</th></tr><tr><th>S</th><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th></tr></thead>');
-					if (browser.isChinese()) {
+					if (myApi.browser.isChinese()) {
 						that.tHead = $('<thead><tr><th id="prev">&lsaquo;</th><th colspan="5" id="currM"></th><th id="next">&rsaquo;</th></tr><tr><th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th></tr></thead>');
 					}
 				}
 				that.tHead.find('#currM').text(months[that.date.getMonth()] +" " + that.date.getFullYear());
-				if (browser.isChinese()) {
+				if (myApi.browser.isChinese()) {
 					that.tHead.find('#currM').text(that.date.getFullYear() + '年' + months[that.date.getMonth()] + '月');
 				}
 				that.calendar.append(that.tHead);
@@ -390,7 +286,7 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 					for (var x = 0; x < 4; x++) {
 						var col = $('<td align="center"></td>');
 						var m = $('<span class="month" num="' + currI + '">' + short_months[currI] + '</span>');
-						if (browser.isChinese()) {
+						if (myApi.browser.isChinese()) {
 							m = $('<span class="month" num="' + currI + '">' + short_months[currI] + '月</span>');
 						}
 						col.append(m).appendTo(row);

@@ -19,28 +19,35 @@
             var placeholderListener = {
                 //添加输入项
                 add: function(tagName) {
+					if (!Array.isArray(window.placeholderList))
+						window.placeholderList = [];
+					
                     var list = document.getElementsByTagName(tagName);
                     for (var i = 0; i < list.length; i++) {
                         this.render(list[i]);
                     }
                     return this;
                 },
+
                 //渲染
                 render: function(dom) {
                     var text = dom.getAttribute('placeholder');
                     if (!!text) {
-                        this.attachEvent(dom, this.getDiv(dom, text));
+						var div = this.getDiv(dom, text);
+                        this.attachEvent(dom, div);
+						window.placeholderList[window.placeholderList.length] = { 
+							dom: dom
+							, div: div
+						};
                     }
                 },
+
                 //设置样式
                 getDiv: function(dom, text) {
                     var div = document.createElement('div');
  
                     div.style.position = 'absolute';
-                    div.style.width = this.getPosition(dom, 'Width') + 'px';
-                    div.style.height = this.getPosition(dom, 'Height') + 'px';
-                    div.style.left = this.getPosition(dom, 'Left') + 'px';
-                    div.style.top = this.getPosition(dom, 'Top') + 'px';
+					this.position(dom, div);
                     div.style.color = '#757575';
                     div.style.textIndent = '5px';
                     div.style.zIndex = 999;
@@ -57,6 +64,15 @@
                     document.getElementsByTagName('body')[0].appendChild(div);
                     return div;
                 },
+				
+				// 定位
+				position: function(dom, div) {
+                    div.style.width = this.getPosition(dom, 'Width') + 'px';
+                    div.style.height = this.getPosition(dom, 'Height') + 'px';
+                    div.style.left = this.getPosition(dom, 'Left') + 'px';
+                    div.style.top = this.getPosition(dom, 'Top') + 'px';
+				},
+				
                 //计算当前输入项目的位置
                 getPosition: function(dom, name, parentDepth) {
                     var offsetName = 'offset' + name;
@@ -67,6 +83,7 @@
                     }
                     return offsetVal;
                 },
+
                 //添加事件
                 attachEvent: function(dom, div) {
  
@@ -87,7 +104,7 @@
                         e.srcElement.style.display = 'none';
                         dom.focus();
                     });
-                },
+                }
  
             };
  
@@ -95,6 +112,18 @@
             setTimeout(function() {
                 placeholderListener.add('input').add('textarea');
             }, 50);
+			
+			$(window).resize(function () {
+				console.log('On window resize');
+				
+				console.log('placeholderList length:' + window.placeholderList.length);
+				for (var i = 0; i < window.placeholderList.length; i ++) {
+					placeholderListener.position(
+						window.placeholderList[i].dom
+						, window.placeholderList[i].div
+					);
+				} // for
+			});
         });
     }
 })();

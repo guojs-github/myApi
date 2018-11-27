@@ -7,9 +7,17 @@ if (typeof jQuery === 'undefined') {
 	throw new Error('myApi: This plugin requires jQuery'); 
 }
 
-$(function () {
+if (typeof (window.console) != 'object') {
+	window.console = {
+		log: function () {}
+	};
+}
+
+
+$(function () {	
 	console.log('myApi loading.');
 	
 	myApi.string.init();
+	myApi.array.init();
 })
 
