@@ -51,13 +51,13 @@ function bind() {
 	bindAddSeconds();
 	bindAddDays();
 
+	bindFileExists();
+
 	bindLoading();
 	bindToast();
 	bindCalendar();
 	
 	/*
-	bindToast();
-	
 	bindGisLocate();
 	bindGisPathByAddresses();
 	bindGisPathByPoints();
@@ -502,6 +502,23 @@ function bindAddDays() {
 		prompt += '\n' + days + '天后时间是' + myApi.time.formatTime(myApi.time.addDays(now, days));
 
 		alert(prompt);
+	});
+}
+
+// file //////////////////////////////////////////////////
+
+function bindFileExists() {
+	console.log("Bind file exists.");
+
+	var el = $("#file-exists");
+	el.click(function () {
+		console.log("file exists.");
+		
+		var urls = ['./image/logo.png', './image/logo1.png']
+		for (var i = 0; i < urls.length; i ++) {
+			var exists = myApi.file.exists(urls[i])
+			alert('文件 "' + urls[i] + '" ' + (exists? '存在': '未找到'));
+		}
 	});
 }
 

@@ -29,6 +29,7 @@ gulp.task('minify-js', ['minify-css'], function() {
 				, './src/common/browser.js' 
 				, './src/common/common.js' 
 				, './src/common/cookie.js' 
+				, './src/common/file.js' 
 				, './src/common/number.js' 
 				, './src/common/request.js' 
 				, './src/common/storage.js' 
