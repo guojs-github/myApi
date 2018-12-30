@@ -7,22 +7,33 @@ var gulp		=require('gulp'),  				//gulp基础库
 	del			=require('del'),				//文件删除
     notify		=require('gulp-notify');   		//提示
 
-gulp.task('default', ['clean'], function() {
-	// 将你的默认的任务代码放在这
-	gulp.start('minify-js'); 
-});
-
 gulp.task('clean', function() {
 	// 清除指定文件
-	del([
+	return del([
 		'./dist/js/myApi*.js'
 		, './dist/css/myApi*.css'
 		, './dist/image/*.*'
 	]);
 });
 
+// 复制image
+gulp.task('copy-image', function(){
+   return gulp.src('./src/image/*.*')
+       .pipe(gulp.dest('dist/image'))           			//输出
+});
+
+// 处理css
+gulp.task('minify-css', function(){
+   return gulp.src('./src/css/*.css')
+       .pipe(concat('myApi.css'))      					//合并css
+       .pipe(gulp.dest('dist/css'))           			//输出
+       .pipe(rename({suffix:'.min'}))         			//重命名
+       .pipe(minifycss())                    			//压缩
+       .pipe(gulp.dest('dist/css'))            			//输出
+});
+
 // 处理js
-gulp.task('minify-js', ['minify-css'], function() {
+gulp.task('minify-js', function() {
 	return gulp.src([ 									//被合并的js 
 				'./src/index.js'
 				, './src/common/array.js' 
@@ -49,19 +60,7 @@ gulp.task('minify-js', ['minify-css'], function() {
 			.pipe(notify({message:"myApi压缩完成"}));   //提示,windows下出的是气泡提示	
 });
 
-// 处理css
-gulp.task('minify-css', ['copy-image'], function(){
-   return gulp.src('./src/css/*.css')
-       .pipe(concat('myApi.css'))      					//合并css
-       .pipe(gulp.dest('dist/css'))           			//输出
-       .pipe(rename({suffix:'.min'}))         			//重命名
-       .pipe(minifycss())                    			//压缩
-       .pipe(gulp.dest('dist/css'))            			//输出
-});
-
-// 复制image
-gulp.task('copy-image',function(){
-   return gulp.src('./src/image/*.*')
-       .pipe(gulp.dest('dist/image'))           			//输出
-});
+gulp.task('default', gulp.series('clean', 'copy-image', 'minify-css', 'minify-js',  function(done) {
+	done(); // 标志任务结束
+}));
 
