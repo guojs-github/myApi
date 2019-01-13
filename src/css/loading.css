@@ -14,7 +14,7 @@
 	background-image: url(../image/loading.gif);
 	background-repeat: no-repeat;
 	background-position: center;
-	background-color: black;
+	background-color: red;
 	opacity: 0.3;
 	filter:alpha(opacity=30);	
 }
