@@ -1,11 +1,12 @@
-var gulp		=require('gulp'),  				//gulp基础库
-    minifycss	=require('gulp-minify-css'),	//css压缩
-    concat		=require('gulp-concat'),   		//合并文件
-    uglify		=require('gulp-uglify'),   		//js压缩
-    rename		=require('gulp-rename'),   		//文件重命名
-    jshint		=require('gulp-jshint'),   		//js检查
-	del			=require('del'),				//文件删除
-    notify		=require('gulp-notify');   		//提示
+var gulp		= require('gulp'),  				//gulp基础库
+    minifycss	= require('gulp-minify-css'),		//css压缩
+    concat		= require('gulp-concat'),   		//合并文件
+    uglify		= require('gulp-uglify'),   		//js压缩
+	strip 		= require('gulp-strip-comments'),	//只是用来删除注释
+	rename		= require('gulp-rename'),   		//文件重命名
+    jshint		= require('gulp-jshint'),   		//js检查
+	del			= require('del'),					//文件删除
+    notify		= require('gulp-notify');   		//提示
 
 gulp.task('clean', function() {
 	// 清除指定文件
@@ -53,11 +54,8 @@ gulp.task('minify-js', function() {
 				, './src/display/toast.js' 
 			]) 
 			.pipe(concat('myApi.js'))   				//合并js
+			.pipe(strip())								//删除注释
 			.pipe(gulp.dest('dist/js'))        			//输出
-			.pipe(rename({suffix:'.min'}))     			//重命名
-			.pipe(uglify())                    			//压缩
-			.pipe(gulp.dest('dist/js'))            		//输出 
-			// .pipe(notify({message:"myApi压缩完成"}));   //提示,windows下出的是气泡提示	
 });
 
 //在命令行gulp auto启动此任务

@@ -1,7 +1,3 @@
-/*
-	My api main entry
-	2018.11.22 GuoJS
-*/
 
 if (typeof jQuery === 'undefined') { 
 	throw new Error('myApi: This plugin requires jQuery'); 
@@ -16,29 +12,25 @@ if (typeof (window.console) != 'object') {
 
 $(function () {	
 	console.log('myApi loading.');
-	
-	myApi.string.init();
+
+		myApi.string.init();
 	myApi.array.init();
 })
 
 
-/*
-	Array routines
-	2018.11.27 GuoJS
-*/
 var myApi = myApi || {};
 myApi.array = ( function() {
 	var obj = {
 		init: function() {
 			console.log("Initialize myapi array library.");
-			
-			this.isArray();
+
+						this.isArray();
 		},
 
 		isArray: function() {
 			console.log("Add isArray routines.");
-			
-			if ('function' != typeof(Array.isArray)) {
+
+						if ('function' != typeof(Array.isArray)) {
 				Array.isArray = function (arg) {
 					return Object.prototype.toString.call(arg) === '[object Array]';
 				}
@@ -50,13 +42,6 @@ myApi.array = ( function() {
 })();
 
 
-/*
-	Browser related routines.
-	2018.8.24 GuoJS
-	
-	Add BROWSER_TYPE, type, isIE, availHeight 
-	2018.11.22 GuoJS
-*/
 var myApi = myApi || {};
 myApi.browser = ( function() {
 	var obj = {
@@ -70,24 +55,24 @@ myApi.browser = ( function() {
 			WEIXIN: 'Weixin',
 			IE: 'IE'
 		},
-		
-		type: function() { // Return the type of browser
+
+				type: function() { 
 			console.log("Browser type");
-			
-			var userAgent = navigator.userAgent; //»°µ√‰Ø¿¿∆˜µƒuserAgent◊÷∑˚¥Æ  
-			var isOpera = userAgent.indexOf("Opera") > -1; //≈–∂œ «∑ÒOpera‰Ø¿¿∆˜  
-			var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera; //≈–∂œ «∑ÒIE‰Ø¿¿∆˜  
+
+						var userAgent = navigator.userAgent; 
+			var isOpera = userAgent.indexOf("Opera") > -1; 
+			var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera; 
 			var isIE11 = -1 < userAgent.indexOf("Trident") &&  -1 < userAgent.indexOf("rv") > -1 && !isIE;
-			var isEdge = userAgent.indexOf("Edge") > -1 && !isIE11; //≈–∂œ «∑ÒIEµƒEdge‰Ø¿¿∆˜  
-			var isWeixin = userAgent.toLowerCase().indexOf("micromessenger") > -1; // ≈–∂œ «∑ÒŒ¢–≈‰Ø¿¿∆˜
-			var isFF = userAgent.indexOf("Firefox") > -1; //≈–∂œ «∑ÒFirefox‰Ø¿¿∆˜  
-			var isSafari = userAgent.indexOf("Safari") > -1 && userAgent.indexOf("Chrome") == -1 && !isWeixin; //≈–∂œ «∑ÒSafari‰Ø¿¿∆˜  
-			var isChrome = userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1 && !isWeixin;; //≈–∂œChrome‰Ø¿¿∆˜  
+			var isEdge = userAgent.indexOf("Edge") > -1 && !isIE11; 
+			var isWeixin = userAgent.toLowerCase().indexOf("micromessenger") > -1; 
+			var isFF = userAgent.indexOf("Firefox") > -1; 
+			var isSafari = userAgent.indexOf("Safari") > -1 && userAgent.indexOf("Chrome") == -1 && !isWeixin; 
+			var isChrome = userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1 && !isWeixin;; 
 			var reIE = null;
 			var fIEVersion = null;
-			
-			try {
-				if (isIE) { // IE
+
+						try {
+				if (isIE) { 
 					 reIE = new RegExp("MSIE (\\d+\\.\\d+);");
 					 reIE.test(userAgent);
 					 fIEVersion = parseFloat(RegExp["$1"]);
@@ -123,12 +108,12 @@ myApi.browser = ( function() {
 				fIEVersion = null;
 			}		
 		},
-		
-		isIE: function() { 
+
+				isIE: function() { 
 			console.log("Is ie browser?");
 			var type = this.type();
-			
-			try {
+
+						try {
 				if (-1 < type.indexOf(this.BROWSER_TYPE.IE))
 					return true;
 				else
@@ -140,26 +125,24 @@ myApi.browser = ( function() {
 				type = null
 			}
 		},
-		
-		availHeight: function() { // º∆À„µ±«∞‰Ø¿¿∆˜◊Ó¥ÛªØ«Èøˆœ¬ø…”√∏ﬂ∂»,≤ªπˆ∂Øµƒ«Èøˆœ¬
+
+				availHeight: function() { 
 			var type = '';
 			var height = 0;
-			var taskBarHeight = 40; // »ŒŒÒ¿∏∏ﬂ∂»
+			var taskBarHeight = 40; 
 			var screenTop = 0;
-			
-			try {
+
+						try {
 				type = this.type();				
-				// alert(type);
-				// alert(this.isIE());
-				if (this.isIE()) { // IE
-					screenTop = 108; /* IE, window toolbar+ window menu∏ﬂ∂»*/
-					return screen.availHeight/*∆¡ƒª∑÷±Ê¬ £¨»•µÙ»ŒŒÒ¿∏£¨»•µÙµ±«∞¥∞ø⁄±ÍÃ‚¿∏∏ﬂ∂»*/ - screenTop/* Chrome caption+toolbar+menu∏ﬂ∂»*/;
-				} else if (this.BROWSER_TYPE.CHROME == type) { // Chrome
-					screenTop = 90; /* Chrome, window caption+ window menu + window menu∏ﬂ∂»*/
-					return screen.availHeight/*∆¡ƒª∑÷±Ê¬ */ - taskBarHeight - screenTop;
-				} else { // Other
-					screenTop = 90; /* Chrome, window caption+ window menu + window menu∏ﬂ∂»*/
-					return screen.availHeight/*∆¡ƒª∑÷±Ê¬ */ - taskBarHeight - screenTop;
+				if (this.isIE()) { 
+					screenTop = 108; 
+					return screen.availHeight - screenTop;
+				} else if (this.BROWSER_TYPE.CHROME == type) { 
+					screenTop = 90; 
+					return screen.availHeight - taskBarHeight - screenTop;
+				} else { 
+					screenTop = 90; 
+					return screen.availHeight - taskBarHeight - screenTop;
 				}
 			} catch(e) {
 				throw e;
@@ -170,22 +153,22 @@ myApi.browser = ( function() {
 				screenTop = null;
 			}
 		},
-		
-		language: function() {
+
+				language: function() {
 			console.log('Get browser language');
 			var type = this.type();
 			var DEFAULT_LANGUAGE = 'en';
 			var result = DEFAULT_LANGUAGE;
-			
-			try {
+
+						try {
 				if (-1 < type.indexOf(this.BROWSER_TYPE.IE)) {
 					result = window.navigator.userLanguage.toLowerCase();
 				}
 				else {
 					result = window.navigator.language.toLowerCase();
 				}
-				
-				return result;
+
+								return result;
 			} catch(ex) {
 				result = DEFAULT_LANGUAGE;
 				return result;
@@ -195,28 +178,21 @@ myApi.browser = ( function() {
 				result = null;
 			}
 		},
-		
-		isChinese: function() {
+
+				isChinese: function() {
 			console.log('The language is chinese?');
-			
-			if (this.language() == 'zh-cn')
+
+						if (this.language() == 'zh-cn')
 				return true;
 			else
 				return false;
 		}
 	};
-	
-	return obj;
+
+		return obj;
 })();
 
 
-/*
-	Common routines.
-	2018.8.6 GuoJS
-	
-	Add 
-	2018.11.22 GuoJS
-*/
 var myApi = myApi || {};
 myApi.common = (function() {
 	var obj = {
@@ -225,26 +201,26 @@ myApi.common = (function() {
 			console.log("key:" + key);
 
 			var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)", "i");  
-			var r = window.location.search.substr(1).match(reg);  //Ëé∑Âèñurl‰∏≠"?"Á¨¶ÂêéÁöÑÂ≠óÁ¨¶‰∏≤Âπ∂Ê≠£ÂàôÂåπÈÖç
+			var r = window.location.search.substr(1).match(reg);  
 			var context = "";  
-			
-			if (null != r)  
+
+						if (null != r)  
 				context = r[2];  
 			reg = null;  
 			r = null;  
-			
-			return null == context || "" == context || "undefined" == context ? "" : context;  		
+
+						return null == context || "" == context || "undefined" == context ? "" : context;  		
 		},
-		
-		checkMobile: function(value) {
+
+				checkMobile: function(value) {
 			console.log("Check mobile phone number.");		
 			console.log("value:" + value);
 			var reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
-			
-			return reg.test(value);
+
+						return reg.test(value);
 		},
-		
-		stopBubble: function(e) {
+
+				stopBubble: function(e) {
 			console.log("Stop bubble");
 
 			if (e && e.stopPropagation)  
@@ -252,11 +228,10 @@ myApi.common = (function() {
 			else  
 				window.event.cancelBubble = true 
 		},
-		
-		ref: function(type, file) {
+
+				ref: function(type, file) {
 			console.log('Add file reference to page');
-			
-			// Check
+
 			if ((typeof type != 'string') || (type.trim().length <=0)) {
 				console.log('Invalid reference type.');
 				return;
@@ -267,8 +242,7 @@ myApi.common = (function() {
 				return;
 			}
 			console.log('file:' + file);
-			
-			// Update
+
 			var stamp = myApi.time.formatTime(new Date());
 			if (type == 'css') {
 				var link = document.createElement("link");
@@ -284,24 +258,20 @@ myApi.common = (function() {
 			}
 		}
 	};
-	
-	return obj;
+
+		return obj;
 })();
 
 
-/*
-	Cookie
-	2018.11.22 GuoJS
-*/
 
 var myApi = myApi || {};
 myApi.cookie = (new (function () {
 	var maxage = 60*60*24*1000;
     var path = '/';
- 
-    var cookie = getCookie();
- 
-    function getCookie(){
+
+     var cookie = getCookie();
+
+     function getCookie(){
         var cookie = {};
         var all = document.cookie; console.log("cookie:" + all);
         if(all === "")
@@ -317,14 +287,14 @@ myApi.cookie = (new (function () {
         }
         return cookie;
     }
- 
-    var keys = [];
+
+     var keys = [];
     for(var key in cookie)
         keys.push(key);
- 
-    this.length = keys.length;
- 
-    this.key = function(n){
+
+     this.length = keys.length;
+
+     this.key = function(n){
 		console.log("Get specified cookie;");
 		console.log("n:" + n);
 
@@ -332,55 +302,55 @@ myApi.cookie = (new (function () {
             return null;
         return keys[n];
     };
- 
-    this.setItem = function(key, value){
+
+     this.setItem = function(key, value){
 		console.log("Set cookie.");
 		console.log("key:" + key);
 		console.log("value:" + value);
-		
-        if(! (key in cookie)){
+
+		        if(! (key in cookie)){
             keys.push(key);
             this.length++;
         }
- 
-        cookie[key] = value;
+
+         cookie[key] = value;
         var cookies = key + "=" +encodeURIComponent(value);
         if(maxage)
             cookies += "; max-age=" + maxage;
         if(path)
             cookies += "; path=" + path;
- 
-        document.cookie = cookies;
+
+         document.cookie = cookies;
     };
- 
-    this.getItem = function(key){
+
+     this.getItem = function(key){
 		console.log("Get cookie.");
 		console.log("key:" + key);
 
         return "undefined" == typeof(cookie[key]) || null == cookie[key] ? "": cookie[key];
     };
- 
-    this.removeItem = function(key){
+
+     this.removeItem = function(key){
 		console.log("Remove cookie.");
 		console.log("key:" + key);
 
         if(!(key in cookie))
             return;
- 
-        delete cookie[key];
- 
-        for(var i=0; i<keys.length; i++){
+
+         delete cookie[key];
+
+         for(var i=0; i<keys.length; i++){
             if(keys[i] === key){
                 keys.splice(i, 1);
                 break;
             }
         }
         this.length--;
- 
-        document.cookie = key + "=; max-age=0" + "; path=" + path;;
+
+         document.cookie = key + "=; max-age=0" + "; path=" + path;;
     };
- 
-    this.clear = function(){
+
+     this.clear = function(){
 		console.log("Clear cookie.");
 
 		for (var i=0; i<keys.length; i++)
@@ -392,10 +362,6 @@ myApi.cookie = (new (function () {
 })());
 
 
-/*
-	file related routines.
-	2018.12.29 GuoJS
-*/
 var myApi = myApi || {};
 myApi.file = ( function() {
 	var obj = {
@@ -403,41 +369,34 @@ myApi.file = ( function() {
 			console.log('Check if the file online exists?');
 			console.log('url:' + url)
 
-			// create request object
 			var xmlHttp
 			if (window.ActiveXObject)  {  
 				xmlHttp = new ActiveXObject("Microsoft.XMLHTTP")
 			} else if (window.XMLHttpRequest) {  
 				xmlHttp = new XMLHttpRequest();  
 			}
-			
-			// request
-			xmlHttp.open('get', url, false/* wait for the request done */)
-			xmlHttp.send() // execute the request
-			
-			// analyze response
+
+			xmlHttp.open('get', url, false)
+			xmlHttp.send() 
+
 			if (xmlHttp.readyState == 4){
-				if (xmlHttp.status == 200) { // OK
+				if (xmlHttp.status == 200) { 
 					return true
-				} else if (xmlHttp.status == 404) {// Not found
+				} else if (xmlHttp.status == 404) {
 					return false
-				} else { // Other status
+				} else { 
 					return false
 				}
 			}
-			
-			return false
+
+						return false
 		}
 	};
-	
-	return obj;
+
+		return obj;
 })();
 
 
-/*
-	number routines.
-	2018.8.27 By GuoJS
-*/
 var myApi = myApi || {};
 myApi.number = (function(){
 	var obj = {
@@ -458,57 +417,51 @@ myApi.number = (function(){
 			while (re.test(s))
 				s = s.replace(re, "$1,$2");
 			s = s.replace(/,(\d\d)$/, ".$1");
-			
-			if (type == 0) {
+
+						if (type == 0) {
 				var a = s.split(".");
 				if (a[1] == "00") {
 					s = a[0];
 				}
 			}
-			
-			if (result < 0)
+
+						if (result < 0)
 				result = "(" + s + ")";
 			else
 				result = s;
-			
-			return result;
+
+						return result;
 		}
 	};
-	
-	return obj;
+
+		return obj;
 })();
 
 
-/*
-	Ajax request.
-	2018.8.6 By GuoJS
-*/
 
 var myApi = myApi || {};
 myApi.request = (function() {
 	var obj = {
-		requestTimeout: 3000, // ms
-		
-		post: function(url, param, success, fail, timeout) {
+		requestTimeout: 3000, 
+
+				post: function(url, param, success, fail, timeout) {
 			console.log("Send a post request.");
 			console.log("url:" + url);
 			console.log("param:" + JSON.stringify(param));
-			
-			// Check
-			var requestTimeout = this.requestTimeout; // ms
+
+			var requestTimeout = this.requestTimeout; 
 			if (('number' == typeof(timeout)) && (0 < timeout))
 				requestTimeout = timeout;
-				
-			// Request
+
 			myApi.display.loading.show();
 			var ajaxRequest = $.ajax({ 
 				url: url, 
 				type: "POST",
 				data: JSON.stringify(param), 
 				cache: false, 
-				timeout: requestTimeout, // ms
-				dataType: 'json', //Êé•ÂèóÊï∞ÊçÆÊ†ºÂºè (ËøôÈáåÊúâÂæàÂ§ö,Â∏∏Áî®ÁöÑÊúâhtml,xml,js,json) 
-				error: function(request, status, err){ //Â§±Ë¥• 
+				timeout: requestTimeout, 
+				dataType: 'json', 
+				error: function(request, status, err){ 
 					console.log("Request fail.");
 					console.log("request:" + JSON.stringify(request));
 					console.log("status:" + JSON.stringify(status));
@@ -517,40 +470,38 @@ myApi.request = (function() {
 					if ("function" == typeof(fail))
 						fail(request, status, err);	
 				}, 
-				success: function(data){ //ÊàêÂäü 
+				success: function(data){ 
 					console.log("Request success");
 					console.log("data:" + JSON.stringify(data));
-					
-					if ("function" == typeof(success))
+
+										if ("function" == typeof(success))
 						success(data);						
 				}, 
 				complete: function(XMLHttpRequest, status){ 
 					myApi.display.loading.hide();
-			„ÄÄ„ÄÄ„ÄÄ„ÄÄif ('timeout' == status){ //Ë∂ÖÊó∂,statusËøòÊúâsuccess,errorÁ≠âÂÄºÁöÑÊÉÖÂÜµ
+			„ÄÄ„ÄÄ„ÄÄ„ÄÄif ('timeout' == status){ 
 						ajaxRequest.abort();
 					}
 				}
-			});  // ajax
+			});  
 		},
-		
-		get: function(url, success, fail, timeout) {
+
+				get: function(url, success, fail, timeout) {
 			console.log("Send a get request.");
 			console.log("url:" + url);
-			
-			// Check
-			var requestTimeout = this.requestTimeout; // ms
+
+			var requestTimeout = this.requestTimeout; 
 			if (('number' == typeof(timeout)) && (0 < timeout))
 				requestTimeout = timeout;
-			
-			// Request
+
 			myApi.display.loading.show();
 			var ajaxRequest = $.ajax({ 
 				url: url, 
 				type: "GET",
 				cache: false, 
-				timeout: requestTimeout, // ms
-				dataType: 'json', //Êé•ÂèóÊï∞ÊçÆÊ†ºÂºè (ËøôÈáåÊúâÂæàÂ§ö,Â∏∏Áî®ÁöÑÊúâhtml,xml,js,json) 
-				error: function(request, status, err){ //Â§±Ë¥• 
+				timeout: requestTimeout, 
+				dataType: 'json', 
+				error: function(request, status, err){ 
 					console.log("Request fail.");
 					console.log("request:" + JSON.stringify(request));
 					console.log("status:" + JSON.stringify(status));
@@ -559,49 +510,46 @@ myApi.request = (function() {
 					if ("function" == typeof(fail))
 						fail(request, status, err);	
 				}, 
-				success: function(data){ //ÊàêÂäü 
+				success: function(data){ 
 					console.log("Request success");
 					console.log("data:" + JSON.stringify(data));
-					
-					if ("function" == typeof(success))
+
+										if ("function" == typeof(success))
 						success(data);						
 				}, 
 				complete: function(XMLHttpRequest, status){ 
 					myApi.display.loading.hide();
-			„ÄÄ„ÄÄ„ÄÄ„ÄÄif ('timeout' == status){ //Ë∂ÖÊó∂,statusËøòÊúâsuccess,errorÁ≠âÂÄºÁöÑÊÉÖÂÜµ
+			„ÄÄ„ÄÄ„ÄÄ„ÄÄif ('timeout' == status){ 
 						ajaxRequest.abort();
 					}
 				}
-			});  // ajax
+			});  
 		}
 	};
-	
-	return obj;	
+
+		return obj;	
 })();
-/*
-	Browser storage routine.
-	2018.8.6 By GuoJS
-*/
+
 var myApi = myApi || {};
 myApi.storage = (new (function (){
 	var storage;
-	
-	if (window.localStorage) {
+
+		if (window.localStorage) {
 		storage = window.localStorage;
 	} else {
 		storage = require('./cookie.js')();
 	}
-	
-    this.setItem = function(key, value){
+
+	    this.setItem = function(key, value){
 		storage.setItem(key, value);
 	}
-	
-	this.getItem = function(key) {
+
+		this.getItem = function(key) {
 		var value = storage.getItem(key); 
 		return "undefined" == typeof(value) || null == value ? "" : value;
 	}
-	
-	this.removeItem = function(key) {
+
+		this.removeItem = function(key) {
 		storage.removeItem(key);
 	}
 
@@ -611,23 +559,19 @@ myApi.storage = (new (function (){
 })());
 
 
-/*
-	String routines
-	2018.11.22 GuoJS
-*/
 var myApi = myApi || {};
 myApi.string = ( function() {
 	var obj = {
 		init: function() {
 			console.log("Initialize myapi string library.");
-			
-			this.trim();
+
+						this.trim();
 		},
 
 		trim: function() {
 			console.log("Add trim routines.");
-			
-			if ('function' != typeof(String.trim)) {
+
+						if ('function' != typeof(String.trim)) {
 				String.prototype.trim = function () {
 					return this.replace(/(^\s*)|(\s*$)/g, "");
 				}
@@ -651,45 +595,39 @@ myApi.string = ( function() {
 })();
 
 
-/*
-	time routines.
-	2018.8.20 By GuoJS
-*/
 var myApi = myApi || {};
 myApi.time = (function(){
 	var obj = {
 		formatDuration: function(value) {
 			console.log("Format duration:" + value);
-			
-			if ("number" != typeof(value))
+
+						if ("number" != typeof(value))
 				return "";
 			if (0 > value)
 				return "";
-			
-			// Calculate
+
 			var temp = value;
 			var hour = (temp - temp % 3600) / 3600;
 			temp -= hour * 3600;
 			var minute = (temp - temp % 60) / 60;
 			temp -= minute * 60;
 			var second = temp;
-			
-			// Format
+
 			var result = ""
 			if (0 < hour)
 				result += hour + "Êó∂";
 			if ((0 < minute) || (0 < hour))
 				result += minute + "ÂàÜ";
 			result+= second + "Áßí";
-			
-			return result;
+
+						return result;
 		},		
-		
-		formatTime: function(time) { // Ê†ºÂºèÂåñÊó∂ÈíüÊòæÁ§∫
+
+				formatTime: function(time) { 
 			if (null == time) return "";
 			if (isNaN(time)) return "";
-			
-			var result = "";
+
+						var result = "";
 			result += time.getFullYear();
 			result += "-";
 			result += $.trim("" + (time.getMonth() + 1)).length < 2 ? "0" + (time.getMonth() + 1) : (time.getMonth() + 1);
@@ -702,18 +640,18 @@ myApi.time = (function(){
 
 			return result;
 		},
-		
-		formatDateString: function(dateString, sep) { // Ê†ºÂºèÂåñÊó•ÊúüÂ≠óÁ¨¶‰∏≤Ôºå‰ªéyyyyMMddÂà∞yyyy-MM-dd
+
+				formatDateString: function(dateString, sep) { 
 			console.log("Format date string");
 			console.log("dateString:" + dateString);
 			console.log("sep:" + sep);
-			
-			if (("string" != typeof(dateString)) || (8 != dateString.trim().length)) {
+
+						if (("string" != typeof(dateString)) || (8 != dateString.trim().length)) {
 				return "";
 			}
 			var temp = dateString.trim();
-			
-			var seperator = "-";
+
+						var seperator = "-";
 			if (("string" == typeof(sep)) && (0 < sep.trim().length)) {
 				seperator = sep.trim();
 			}
@@ -722,11 +660,11 @@ myApi.time = (function(){
 			result += temp.substring(0, 4);
 			result += seperator + temp.substring(4, 6);
 			result += seperator + temp.substring(6, 8);
-			
-			return result;
+
+						return result;
 		},
-		
-		formatDate: function(date, sep) {
+
+				formatDate: function(date, sep) {
 			var year = date.getFullYear();
 			var month = date.getMonth() + 1;
 			var day = date.getDate();
@@ -735,32 +673,28 @@ myApi.time = (function(){
 			return year + seperator + (10 > month ? "0" + month : month) + seperator + (10 > day ? "0" + day : day);  
 		},
 
-		addSeconds: function(time, seconds) { // Âú®Áé∞ÊúâÊó∂Èó¥‰∏äÊ∑ªÂä†ÁßíÊï∞
+		addSeconds: function(time, seconds) { 
 			if (null == time) return null;
 			if (isNaN(time)) return null;
 			if (null == seconds) return null;
 			if (isNaN(seconds)) return null;
-			
-			var ms = time.getTime(); // ËΩ¨‰∏∫Êó∂Èó¥Êà≥
+
+						var ms = time.getTime(); 
 			var timeAdded = new Date();
 			timeAdded.setTime(ms + seconds * 1000);
-			
-			return timeAdded;
+
+						return timeAdded;
 		},
 
 		addDays: function(time, days) {
 			return myApi.time.addSeconds(time, days * 24 * 3600);
 		}
 	};
-	
-	return obj;
+
+		return obj;
 })();
 
 
-/*
-	WX JSAPI
-	2018.8.24 GuoJS
-*/
 
 var myApi = myApi || {};
 myApi.wx = (function() {
@@ -768,8 +702,8 @@ myApi.wx = (function() {
 		init: function(param, success, fail) {
 			console.log("Initialize wx api.");
 			console.log("param:" + JSON.stringify(param));
-			
-			var error = false;
+
+						var error = false;
 			wx.config({
 				debug: false, 
 				appId: param.appId,
@@ -780,8 +714,8 @@ myApi.wx = (function() {
 			});
 			wx.ready(function(){
 				console.log("JSAPI ready.");
-				
-				if (false == error) {
+
+								if (false == error) {
 					if ("function" == typeof(success)) {
 						success();
 					}
@@ -789,45 +723,45 @@ myApi.wx = (function() {
 			});						
 			wx.error(function(res){
 				console.log("JSAPI initialize fail.");
-				
-				error = true;
+
+								error = true;
 				if ("function" == typeof(fail)) {
 					fail();
 				}
 			});						
-		}, // init
+		}, 
 
 		scan: function(success, fail) {
 			console.log("Scan");
-			
-			wx.checkJsApi({
+
+						wx.checkJsApi({
 				jsApiList: ['scanQRCode'],
 				success: function(res) {
 					console.log("res:" + JSON.stringify(res));
-					
-					if (0 > res.errMsg.indexOf("ok")) {
+
+										if (0 > res.errMsg.indexOf("ok")) {
 						console.log("Error occurred:" + res.errMsg)
 						if ("function" == typeof(fail))
 							fail("Êâ´ÊèèÂäüËÉΩÊ£ÄÊµãÂ§±Ë¥•");
 						return;
 					}
-					
-					if (true == res.checkResult['scanQRCode']) {
+
+										if (true == res.checkResult['scanQRCode']) {
 						console.log("Scan qr code allowed.")
 						wx.scanQRCode({
-							needResult: 1, // ÈªòËÆ§‰∏∫0ÔºåÊâ´ÊèèÁªìÊûúÁî±ÂæÆ‰ø°Â§ÑÁêÜÔºå1ÂàôÁõ¥Êé•ËøîÂõûÊâ´ÊèèÁªìÊûúÔºå
-							scanType: ["qrCode","barCode"], // ÂèØ‰ª•ÊåáÂÆöÊâ´‰∫åÁª¥Á†ÅËøòÊòØ‰∏ÄÁª¥Á†ÅÔºåÈªòËÆ§‰∫åËÄÖÈÉΩÊúâ
+							needResult: 1, 
+							scanType: ["qrCode","barCode"], 
 							success: function (res) {
 								console.log("scan res:" + JSON.stringify(res))
-								
-								if (0 > res.errMsg.indexOf("ok")) {
+
+																if (0 > res.errMsg.indexOf("ok")) {
 									console.log("Error occurred while scan:" + res.errMsg)
 									if ("function" == typeof(fail))
 										fail("Êâ´ÊèèÂäüËÉΩÊú™Ëé∑ÊéàÊùÉ");
 									return;
 								}
-								
-								console.log("scan success");
+
+																console.log("scan success");
 								if ("function" == typeof(success))
 									success(res.resultStr);
 							}
@@ -839,38 +773,23 @@ myApi.wx = (function() {
 					}
 				}
 			});			
-		} // scan
-		
-	};
-	
-	return obj;
+		} 
+
+			};
+
+		return obj;
 })();
 
 
 
-/* -- DO NOT REMOVE --
- * jQuery DCalendar 1.1 and DCalendar Picker 1.3 plugin
- * 
- * Author: Dionlee Uy
- * Email: dionleeuy@gmail.com
- *
- * Date: Sat Mar 2 2013
- *
- * @requires jQuery
- * -- DO NOT REMOVE --
- 
-    2018.11.20 Â§öËØ≠Ë®ÄÊîØÊåÅÊîπËøõ GuoJS
-	2018.11.26 ÂºïÂÖ•myApi
- */
 if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plugin requires jQuery'); }
- 
-+function ($) {
-	// Is chinese?
+
+ +function ($) {
 	console.log('Is chinese?' + myApi.browser.isChinese());
-	
-	Date.prototype.getDays = function() { return new Date(this.getFullYear(), this.getMonth() + 1, 0).getDate(); };
-	
-	var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
+
+		Date.prototype.getDays = function() { return new Date(this.getFullYear(), this.getMonth() + 1, 0).getDate(); };
+
+		var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
 		short_months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
 		daysofweek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 	if (myApi.browser.isChinese()) {
@@ -881,9 +800,8 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 
 	DCalendar = function(elem, options) {
 		this.calendar = $(elem);
-		this.today = new Date();	//system date
+		this.today = new Date();	
 
-		//current selected date, default is today if no value given
 		if(this.calendar.prev().val() === '') {
 			this.date = new Date();
 		} else {
@@ -896,8 +814,8 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 		this.selected = (this.date.getMonth() + 1) + "/" + this.date.getDate() + "/" + this.date.getFullYear();
 		this.minDate = this.calendar.prev().data('mindate');
 		this.maxDate = this.calendar.prev().data('maxdate');
-		
-		if(options.mode === 'calendar')
+
+				if(options.mode === 'calendar')
 			this.tHead = $('<thead><tr><th id="prev">&lsaquo;</th><th colspan="5" id="currM"></th><th id="next">&rsaquo;</th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead>');
 		else if (options.mode === 'datepicker')
 			this.tHead = $('<thead><tr><th id="prev">&lsaquo;</th><th colspan="5" id="currM"></th><th id="next">&rsaquo;</th></tr><tr><th>S</th><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th></tr></thead>');
@@ -922,19 +840,14 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 					min = that.minDate === "today" ? new Date(that.today.getFullYear(), that.today.getMonth(), that.today.getDate()) : new Date(that.minDate),
 					max = that.maxDate === "today" ? new Date(that.today.getFullYear(), that.today.getMonth(), that.today.getDate()) : new Date(that.maxDate);
 
-				/* Calculate year */
 				if(isPrev) { cyear = (cmonth === 0 ? cyear - 1 : cyear); }
 				else if(isNext) { cyear = (cmonth + 2 === 13 ? cyear + 1 : cyear); }
-				/* Calculate month */
 				if(isPrev) { cmonth = (cmonth === 0 ? '12' : cmonth); }
 				else if (isNext) { cmonth = (cmonth + 2 === 13 ? '1' : cmonth + 2); }
 				else { cmonth = cmonth + 1; }
 
-				// Selected date
 				var selected = new Date(cyear, cmonth - 1, sdate);
 
-				// console.log(cmonth);
-				// console.log(selected);
 				if ((that.minDate && selected < min) || (that.maxDate && selected > max)) return;
 
 				that.selected = cmonth + '/' + sdate + '/' + cyear;
@@ -1011,8 +924,8 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 		formatDate : function (format) {
 			var that = this;
 			var d = new Date(that.selected), day = d.getDate(), m = d.getMonth(), y = d.getFullYear();
-			
-			return format.replace(/(yyyy|yy|mmmm|mmm|mm|m|dd|d)/gi, function (e) {
+
+						return format.replace(/(yyyy|yy|mmmm|mmm|mm|m|dd|d)/gi, function (e) {
 				switch(e.toLowerCase()){
 					case 'd': return day;
 					case 'dd': return (day < 10 ? "0"+day: day);
@@ -1081,26 +994,23 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 							break;
 						}
 					}
-					/* For days of previous and next month */
 					if (i === 1 || i > 4) {
-						// First week
 						if (i === 1) {
 							var p = new Date(that.date.getFullYear(), that.date.getMonth() - 1, 1),
 								pMonth = p.getMonth(), pDays = p.getDays();
 
 							for (var a = 6; a >= 0; a--) {
 								if (temp[a].text() === ''){
-									
-									p.setDate(pDays);
+
+																		p.setDate(pDays);
 
 									temp[a].html('<span>' + (pDays--) + '</span>').addClass('pMDate');
-									
-									if ((that.minDate && p < min) || (that.maxDate && p > max)) temp[a].addClass('disabled');
+
+																		if ((that.minDate && p < min) || (that.maxDate && p > max)) temp[a].addClass('disabled');
 									if (that.options.mode === 'datepicker' && p.getTime() == selected.getTime()) temp[a].addClass('selected');
 								}
 							}
 						} 
-						// Last week
 						else if (i > 4) {
 							var nextMonth = new Date(that.date.getFullYear(), that.date.getMonth() + 1, 1);
 							for (var a = 0; a <= 6; a++) {
@@ -1109,8 +1019,8 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 									nextMonth.setDate(nStartDate);
 
 									temp[a].html('<span>' + (nStartDate++) + '</span>').addClass('nMDate');
-									
-									if ((that.minDate && nextMonth < min) || (that.maxDate && nextMonth > max)) temp[a].addClass('disabled');
+
+																		if ((that.minDate && nextMonth < min) || (that.maxDate && nextMonth > max)) temp[a].addClass('disabled');
 									if (that.options.mode === 'datepicker' && nextMonth.getTime() == selected.getTime()) temp[a].addClass('selected');
 								}
 							}
@@ -1149,7 +1059,6 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 		}		
 	}
 
-	/* DEFINITION FOR DCALENDAR */
 	$.fn.dcalendar = function(opts){
 		return $(this).each(function(index, elem){
 			var that = this;
@@ -1170,7 +1079,6 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 
 	$.fn.dcalendar.Constructor = DCalendar;
 
-	/* DEFINITION FOR DCALENDAR PICKER */
 	$.fn.dcalendarpicker = function(opts){
 		return $(this).each(function(){
 			var that = $(this),
@@ -1223,10 +1131,7 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 	}
 
 }(jQuery);
-/*
-	Loading mask.
-	2018.8.6 By GuoJS
-*/
+
 
 var myApi = myApi || {};
 myApi.display = myApi.display || {};
@@ -1234,17 +1139,15 @@ myApi.display.loading = (function(){
 	var obj = {
 		show: function() {
 			console.log("Show loading.");			
-			
-			// Remove first
+
 			this.hide();
 
-			// Create element
 			var loading = document.createElement('div');
-			loading.setAttribute('class', 'myApi-loading'); // Add style class
+			loading.setAttribute('class', 'myApi-loading'); 
 			document.body.appendChild(loading);			
 		},
-		
-		hide: function() {
+
+				hide: function() {
 			console.log("Hide loading.");
 
 			try {
@@ -1257,38 +1160,30 @@ myApi.display.loading = (function(){
 })();
 
 
-/**
-    Ê∫êÁ†ÅÂêçÁß∞Ôºöplaceholder.js
-	ÂºïÂÖ•myApi
-	2018.11.26 GuoJS
- */
- 
-(function() {
-    //‰ªÖÂú®‰∏çÊîØÊåÅ placeholder ÁöÑÊó∂ÂÄôÊâßË°å
+
+ (function() {
     if (!('placeholder' in document.createElement('input'))) {
- 
-        var listenerName = 'attachEvent';
+
+         var listenerName = 'attachEvent';
         var listenerPrefix = 'on';
         if ('addEventListener' in window) {
             listenerName = 'addEventListener';
             listenerPrefix = '';
         }
- 
-        window[listenerName](listenerPrefix + 'load', function() {
+
+         window[listenerName](listenerPrefix + 'load', function() {
             var placeholderListener = {
-                //Ê∑ªÂä†ËæìÂÖ•È°π
                 add: function(tagName) {
 					if (!Array.isArray(window.placeholderList))
 						window.placeholderList = [];
-					
-                    var list = document.getElementsByTagName(tagName);
+
+					                    var list = document.getElementsByTagName(tagName);
                     for (var i = 0; i < list.length; i++) {
                         this.render(list[i]);
                     }
                     return this;
                 },
 
-                //Ê∏≤Êüì
                 render: function(dom) {
                     var text = dom.getAttribute('placeholder');
                     if (!!text) {
@@ -1301,11 +1196,10 @@ myApi.display.loading = (function(){
                     }
                 },
 
-                //ËÆæÁΩÆÊ†∑Âºè
                 getDiv: function(dom, text) {
                     var div = document.createElement('div');
- 
-                    div.style.position = 'absolute';
+
+                     div.style.position = 'absolute';
 					this.position(dom, div);
                     div.style.color = '#757575';
                     div.style.textIndent = '5px';
@@ -1314,8 +1208,8 @@ myApi.display.loading = (function(){
                     div.style.border = dom.style.border;
                     div.style.cursor = 'text';
                     div.innerHTML = text;
- 
-                    if ('TEXTAREA' == dom.tagName.toUpperCase()) {
+
+                     if ('TEXTAREA' == dom.tagName.toUpperCase()) {
                         div.style.lineHeight = '35px';
                     } else {
                         div.style.lineHeight = div.style.height;
@@ -1323,16 +1217,14 @@ myApi.display.loading = (function(){
                     document.getElementsByTagName('body')[0].appendChild(div);
                     return div;
                 },
-				
-				// ÂÆö‰Ωç
+
 				position: function(dom, div) {
                     div.style.width = this.getPosition(dom, 'Width') + 'px';
                     div.style.height = this.getPosition(dom, 'Height') + 'px';
                     div.style.left = this.getPosition(dom, 'Left') + 'px';
                     div.style.top = this.getPosition(dom, 'Top') + 'px';
 				},
-				
-                //ËÆ°ÁÆóÂΩìÂâçËæìÂÖ•È°πÁõÆÁöÑ‰ΩçÁΩÆ
+
                 getPosition: function(dom, name, parentDepth) {
                     var offsetName = 'offset' + name;
                     var offsetVal = dom[offsetName];
@@ -1343,61 +1235,52 @@ myApi.display.loading = (function(){
                     return offsetVal;
                 },
 
-                //Ê∑ªÂä†‰∫ã‰ª∂
                 attachEvent: function(dom, div) {
- 
-                    //ÊøÄÊ¥ªÊó∂ÔºåÈöêËóè placeholder
+
                     dom[listenerName](listenerPrefix + 'focus', function() {
                         div.style.display = 'none';
                     });
- 
-                    //Â§±ÂéªÁÑ¶ÁÇπÊó∂ÔºåÈöêËóè placeholder
+
                     dom[listenerName](listenerPrefix + 'blur', function(e) {
                         if (e.srcElement.value == '') {
                             div.style.display = '';
                         }
                     });
- 
-                    //placeholder ÁÇπÂáªÊó∂ÔºåÂØπÂ∫îÁöÑËæìÂÖ•Ê°ÜÊøÄÊ¥ª
+
                     div[listenerName](listenerPrefix + 'click', function(e) {
                         e.srcElement.style.display = 'none';
                         dom.focus();
                     });
                 }
- 
-            };
- 
-            //Èò≤Ê≠¢Âú® respond.min.jsÂíåhtml5shiv.min.js‰πãÂâçÊâßË°å
+
+             };
+
             setTimeout(function() {
                 placeholderListener.add('input').add('textarea');
             }, 50);
-			
-			$(window).resize(function () {
+
+						$(window).resize(function () {
 				console.log('On window resize');
-				
-				console.log('placeholderList length:' + window.placeholderList.length);
+
+								console.log('placeholderList length:' + window.placeholderList.length);
 				for (var i = 0; i < window.placeholderList.length; i ++) {
 					placeholderListener.position(
 						window.placeholderList[i].dom
 						, window.placeholderList[i].div
 					);
-				} // for
+				} 
 			});
         });
     }
 })();
-/*
-	Toast control
-	2018.11.23 GuoJS
-*/
+
 var myApi = myApi || {};
 myApi.display = myApi.display || {};
 myApi.display.toast = ( function() {
 	var obj = {
 		show: function (param) {
 			console.log("Show toast.");
-			
-			// Check
+
 			if (typeof param != 'object') {
 				console.log("Invalid param.");
 				return;
@@ -1407,44 +1290,40 @@ myApi.display.toast = ( function() {
 				return;
 			}
 			console.log("message:" + param.message);
-			
-			// Remove element first
+
 			try {
 				document.body.removeChild(document.querySelector('div.myApi-toast'));
 			} catch (e) {
 			}
 
-			// Create element
 			var delay = param.delay || 3000;
 			console.log("delay:" + delay);
 			var toastEl = document.createElement('div');
-			toastEl.setAttribute('class', 'myApi-toast'); // Add style class
-			// toastEl.style['z-index'] = 10000; // top most z order
+			toastEl.setAttribute('class', 'myApi-toast'); 
 
 			var toastMaskEl = document.createElement('div');
-			toastMaskEl.setAttribute('class', 'myApi-toast-mask'); // Add style class
+			toastMaskEl.setAttribute('class', 'myApi-toast-mask'); 
 			toastEl.appendChild(toastMaskEl);
-			
-			var toastDialogEl = document.createElement('div');
-			toastDialogEl.setAttribute('class', 'myApi-toast-dialog'); // Add style class
+
+						var toastDialogEl = document.createElement('div');
+			toastDialogEl.setAttribute('class', 'myApi-toast-dialog'); 
 
 			var contentEl = document.createElement('div'); 
-			contentEl.setAttribute('class', 'myApi-toast-content'); // Add style class
+			contentEl.setAttribute('class', 'myApi-toast-content'); 
 
 			var messageEl = document.createTextNode(param.message);
 			contentEl.appendChild(messageEl);
 			toastDialogEl.appendChild(contentEl);
-			
-			toastEl.appendChild(toastDialogEl);
+
+						toastEl.appendChild(toastDialogEl);
 			document.body.appendChild(toastEl);
-			
-			// Hide after delay
+
 			setTimeout(
 				function () {
 					try {
-						document.body.removeChild(toastEl); // remove element
-						
-						if ("function" == typeof(param.complete))
+						document.body.removeChild(toastEl); 
+
+												if ("function" == typeof(param.complete))
 							param.complete();
 					} catch (e) {
 					}
@@ -1453,6 +1332,6 @@ myApi.display.toast = ( function() {
 			);
 		},
 	};
-	
-	return obj;
+
+		return obj;
 })(); 
