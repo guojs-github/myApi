@@ -57,10 +57,15 @@ gulp.task('minify-js', function() {
 			.pipe(rename({suffix:'.min'}))     			//重命名
 			.pipe(uglify())                    			//压缩
 			.pipe(gulp.dest('dist/js'))            		//输出 
-			.pipe(notify({message:"myApi压缩完成"}));   //提示,windows下出的是气泡提示	
+			// .pipe(notify({message:"myApi压缩完成"}));   //提示,windows下出的是气泡提示	
 });
 
-gulp.task('default', gulp.series('clean', 'copy-image', 'minify-css', 'minify-js',  function(done) {
+//在命令行gulp auto启动此任务
+gulp.task('auto', function(){    
+    gulp.watch('src/**', gulp.series('clean', 'copy-image', 'minify-css', 'minify-js')) //监听文件修改，当文件修改则执行less任务
+})
+
+gulp.task('default', gulp.series('clean', 'copy-image', 'minify-css', 'minify-js', 'auto',  function(done) {
 	done(); // 标志任务结束
 }));
 

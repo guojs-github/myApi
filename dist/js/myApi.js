@@ -73,6 +73,7 @@ myApi.browser = ( function() {
 		
 		type: function() { // Return the type of browser
 			console.log("Browser type");
+			
 			var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
 			var isOpera = userAgent.indexOf("Opera") > -1; //判断是否Opera浏览器  
 			var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera; //判断是否IE浏览器  
