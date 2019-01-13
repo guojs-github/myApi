@@ -1,12 +1,12 @@
-var gulp		= require('gulp'),  				//gulp基础库
-    minifycss	= require('gulp-minify-css'),		//css压缩
-    concat		= require('gulp-concat'),   		//合并文件
-    uglify		= require('gulp-uglify'),   		//js压缩
-	strip 		= require('gulp-strip-comments'),	//只是用来删除注释
-	rename		= require('gulp-rename'),   		//文件重命名
-    jshint		= require('gulp-jshint'),   		//js检查
-	del			= require('del'),					//文件删除
-    notify		= require('gulp-notify');   		//提示
+const gulp			= require('gulp'),  				//gulp基础库
+	  cleancss		= require('gulp-clean-css'),		//css压缩
+      concat		= require('gulp-concat'),   		//合并文件
+      uglify		= require('gulp-uglify'),   		//js压缩
+	  rename		= require('gulp-rename'),   		//文件重命名
+      jshint		= require('gulp-jshint'),   		//js检查
+	  del			= require('del'),					//文件删除
+      notify		= require('gulp-notify'),   		//提示
+	  strip 		= require('gulp-strip-comments');	// 删除js注释
 
 gulp.task('clean', function() {
 	// 清除指定文件
@@ -26,11 +26,33 @@ gulp.task('copy-image', function(){
 // 处理css
 gulp.task('minify-css', function(){
    return gulp.src('./src/css/*.css')
-       .pipe(concat('myApi.css'))      					//合并css
-       .pipe(gulp.dest('dist/css'))           			//输出
-       .pipe(rename({suffix:'.min'}))         			//重命名
-       .pipe(minifycss())                    			//压缩
-       .pipe(gulp.dest('dist/css'))            			//输出
+		.pipe(concat('myApi.css'))      					//合并css
+		.pipe(cleancss({									//删除注释
+			format: { // 格式参数
+				breaks: { // 什么时候换行
+					afterAtRule: true, 
+					afterBlockBegins: true, 
+					afterBlockEnds: true, 
+					afterComment: true, 
+					afterProperty: true, 
+					afterRuleBegins: true, 
+					afterRuleEnds: true, 
+					beforeBlockEnds: true, 
+					betweenSelectors: true
+				},
+				breakWith: '\n',
+				/*以下设置用一个tab进行缩进显示*/
+				indentBy: 1, 
+				indentWith: 'tab',
+				spaces: { // 什么时候插入空格
+					aroundSelectorRelation: true,
+					beforeBlockBegins: true,
+					beforeValue: true
+				},
+				wrapAt: false // controls maximum line length; defaults to `false`				
+			}
+		}))									
+		.pipe(gulp.dest('dist/css'))           			//输出
 });
 
 // 处理js

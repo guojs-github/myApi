@@ -1,187 +1,179 @@
-/*!Don't remove this!
- * jQuery DCalendar and DCalendar Picker plugin styles
- * 
- * Author: Dionlee Uy
- * Email: dionleeuy@gmail.com
- *
- * Date: Mon Mar 2 2013
- 
-   ÕûºÏµ½myApi
-   2018.11.26 GuoJS
- */
 .myApi-calendar {
 	position: relative;
-	font-family: 'Century Gothic','Segoe UI', Calibri, Arial;
+	font-family: 'Century Gothic','Segoe UI',Calibri,Arial;
 	font-size: 12px;
 	border-collapse: collapse;
-	margin: 0; padding: 0;
+	margin: 0;
+	padding: 0;
 	z-index: 4;
-	border:1px solid rgba(0,0,0,0.08);
+	border: 1px solid rgba(0,0,0,.08);
 	width: 250px;
 	color: #000;
 	text-align: center;
-	background-color: #FFF;
-	line-height: 20px !important;
+	background-color: #fff;
+	line-height: 20px!important
 }
-.myApi-calendar th,
-.myApi-calendar td {
+.myApi-calendar td,
+.myApi-calendar th {
 	text-align: center;
-	-webki-ttransition: all 0.3s ease;
-	-moz-transition: all 0.3s ease;
-	transition: all 0.3s ease;
+	-webki-ttransition: all .3s ease;
+	-moz-transition: all .3s ease;
+	transition: all .3s ease
 }
-.myApi-calendar th:first-child,
-.myApi-calendar td:first-child {
-	margin-left: 5px;
+.myApi-calendar td:first-child,
+.myApi-calendar th:first-child {
+	margin-left: 5px
 }
 .myApi-calendar span {
-	padding: 6px 4px; 
-	display: block;
+	padding: 6px 4px;
+	display: block
 }
 .myApi-calendar .month {
-	padding: 10px;
+	padding: 10px
 }
-
-.myApi-calendar .pMDate
-, .myApi-calendar .nMDate { 
-	color: #AAA; 
+.myApi-calendar .nMDate,
+.myApi-calendar .pMDate {
+	color: #aaa
 }
-
-.myApi-calendar .date
-, .myApi-calendar .pMDate
-, .myApi-calendar .nMDate
-, .myApi-calendar .month { 
-	cursor: pointer; 
+.myApi-calendar .date,
+.myApi-calendar .month,
+.myApi-calendar .nMDate,
+.myApi-calendar .pMDate {
+	cursor: pointer
 }
-
-.myApi-calendar .date.disabled
-, .myApi-calendar .pMDate.disabled
-, .myApi-calendar .nMDate.disabled { 
-	cursor: not-allowed; 
+.myApi-calendar .date.disabled,
+.myApi-calendar .nMDate.disabled,
+.myApi-calendar .pMDate.disabled {
+	cursor: not-allowed
 }
-
-.myApi-calendar .date:not(.disabled):hover
-, .myApi-calendar .pMDate:not(.disabled):hover
-, .myApi-calendar .nMDate:not(.disabled):hover
-, .myApi-calendar .month:hover { 
-	background-color: #E2E2E2; 
+.myApi-calendar .date:not(.disabled):hover,
+.myApi-calendar .month:hover,
+.myApi-calendar .nMDate:not(.disabled):hover,
+.myApi-calendar .pMDate:not(.disabled):hover {
+	background-color: #e2e2e2
 }
-
-.myApi-calendar .date:not(.disabled):active
-, .myApi-calendar .pMDate:not(.disabled):active
-, .myApi-calendar .nMDate:not(.disabled):active
-, .myApi-calendar .month:active { 
-	background-color: #22A7F0; color: #FFF; 
+.myApi-calendar .date:not(.disabled):active,
+.myApi-calendar .month:active,
+.myApi-calendar .nMDate:not(.disabled):active,
+.myApi-calendar .pMDate:not(.disabled):active {
+	background-color: #22a7f0;
+	color: #fff
 }
-
 .myApi-calendar .selected {
-	background-color: #22A7F0 !important;
-	color: #FFF !important;
+	background-color: #22a7f0!important;
+	color: #fff!important
 }
-
 .myApi-calendar tr:first-child th {
-	background-color: #FFF;
+	background-color: #fff;
 	padding: 4px;
 	padding-top: 8px;
-	font-size: 14px;
+	font-size: 14px
 }
-.myApi-calendar tr:first-child th { cursor: pointer; color:#000; }
-.myApi-calendar tr:first-child th:hover { color:#22A7F0; }
-.myApi-calendar tr:first-child th:active { color: #22A7F0; }
-.myApi-calendar thead tr:nth-child(2) th { color: #555; padding: 8px 3px; }
-.myApi-calendar #prev, .myApi-calendar #next {
+.myApi-calendar tr:first-child th {
+	cursor: pointer;
+	color: #000
+}
+.myApi-calendar tr:first-child th:hover {
+	color: #22a7f0
+}
+.myApi-calendar tr:first-child th:active {
+	color: #22a7f0
+}
+.myApi-calendar thead tr:nth-child(2) th {
+	color: #555;
+	padding: 8px 3px
+}
+.myApi-calendar #next,
+.myApi-calendar #prev {
 	font-family: 'Times New Roman';
 	font-size: 20px;
-	padding: 0;
+	padding: 0
 }
 .myApi-calendar #today {
-	text-align: center; cursor: pointer;
-	color: #22A7F0; padding: 10px 6px;
+	text-align: center;
+	cursor: pointer;
+	color: #22a7f0;
+	padding: 10px 6px
 }
-.myApi-calendar #today:hover { color: #80A7DD; }
-.myApi-calendar #today:active { color: #000; }
-.myApi-calendar #currDay { color:#22A7F0; }
+.myApi-calendar #today:hover {
+	color: #80a7dd
+}
+.myApi-calendar #today:active {
+	color: #000
+}
+.myApi-calendar #currDay {
+	color: #22a7f0
+}
 .datepicker {
-	/*background: url('./icon.png') transparent right no-repeat;*/
-	background-size: contain;
+	background-size: contain
 }
-
-
-/*
-	Loading mask style
-	2018.11.22 GuoJS
-*/
-
-.myApi-loading{
+.myApi-loading {
 	position: fixed;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	z-index: 1000;
-
 	background-image: url(../image/loading.gif);
 	background-repeat: no-repeat;
 	background-position: center;
-	background-color: black;
-	opacity: 0.3;
-	filter:alpha(opacity=30);	
+	background-color: #000;
+	opacity: .3
 }
-
-/*
-	Toast style
-	2018.11.23 GuoJS
-*/
-.myApi-toast-mask{
+.myApi-toast-mask {
 	position: fixed;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	z-index: 1000;
-
-	background-color: white;
-	opacity: 0.5;
-	filter:alpha(opacity=50);	
+	background-color: #fff;
+	opacity: .5
 }
-
-@keyframes toast {  
-  0% {transform: scale(1); }
-  70% {transform: scale(.9); }
-  100% {transform: scale(1); }  
-}  
-@-webkit-keyframes toast {  
-  0% {transform: scale(1); }
-  70% {transform: scale(.9); }
-  100% {transform: scale(1); }  
-} 
-
+@keyframes toast {
+	0% {
+		transform: scale(1)
+	}
+	70% {
+		transform: scale(.9)
+	}
+	100% {
+		transform: scale(1)
+	}
+}
+@-webkit-keyframes toast {
+	0% {
+		transform: scale(1)
+	}
+	70% {
+		transform: scale(.9)
+	}
+	100% {
+		transform: scale(1)
+	}
+}
 .myApi-toast-dialog {
 	position: fixed;
 	top: 40%;
 	left: 40%;
 	left: calc(50% - 100px);
 	z-index: 1001;
-	
 	width: 200px;
 	padding: 5px 5px 10px 5px;
-	color: white;
+	color: #fff;
 	background-color: #101010;
 	background-image: url(../image/toast-info.png);
 	background-position: top center;
 	background-repeat: no-repeat;
-	opacity: 0.8;
-	filter:alpha(opacity=80);	
+	opacity: .8;
 	font-size: 14px;
 	text-align: center;
 	border-radius: 5px;
 	overflow: hidden;
-	
-	animation: toast;  
-	animation-duration: 0.3s; 
-	-webkit-animation: toast 0.3s;      	
+	animation: toast;
+	animation-duration: .3s;
+	-webkit-animation: toast .3s
 }
-
 .myApi-toast-dialog > .myApi-toast-content {
-	margin-top: 60px;
+	margin-top: 60px
 }

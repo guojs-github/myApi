@@ -1,13 +1,13 @@
-/* -- DO NOT REMOVE --
- * jQuery DCalendar 1.1 and DCalendar Picker 1.3 plugin
- * 
- * Author: Dionlee Uy
- * Email: dionleeuy@gmail.com
- *
- * Date: Sat Mar 2 2013
- *
- * @requires jQuery
- * -- DO NOT REMOVE --
+/*
+	jQuery DCalendar 1.1 and DCalendar Picker 1.3 plugin
+ 
+	Author: Dionlee Uy
+	Email: dionleeuy@gmail.com
+
+	Date: Sat Mar 2 2013
+
+	@requires jQuery
+	-- DO NOT REMOVE --
  
     2018.11.20 多语言支持改进 GuoJS
 	2018.11.26 引入myApi

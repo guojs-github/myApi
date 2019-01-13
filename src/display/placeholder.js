@@ -1,4 +1,4 @@
-/**
+/*
     源码名称：placeholder.js
 	引入myApi
 	2018.11.26 GuoJS
