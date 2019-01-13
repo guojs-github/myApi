@@ -27,53 +27,28 @@ gulp.task('copy-image', function(){
 gulp.task('minify-css', function(){
    return gulp.src('./src/css/*.css')
 		.pipe(concat('myApi.css'))      					//合并css
-		.pipe(cleancss({									//删除注释
-			format: { // 格式参数
-				breaks: { // 什么时候换行
-					afterAtRule: true, 
-					afterBlockBegins: true, 
-					afterBlockEnds: true, 
-					afterComment: true, 
-					afterProperty: true, 
-					afterRuleBegins: true, 
-					afterRuleEnds: true, 
-					beforeBlockEnds: true, 
-					betweenSelectors: true
-				},
-				breakWith: '\n',
-				/*以下设置用一个tab进行缩进显示*/
-				indentBy: 1, 
-				indentWith: 'tab',
-				spaces: { // 什么时候插入空格
-					aroundSelectorRelation: true,
-					beforeBlockBegins: true,
-					beforeValue: true
-				},
-				wrapAt: false // controls maximum line length; defaults to `false`				
-			}
-		}))									
 		.pipe(gulp.dest('dist/css'))           			//输出
 });
 
 // 处理js
 gulp.task('minify-js', function() {
 	return gulp.src([ 									//被合并的js 
-				'./src/index.js'
-				, './src/common/array.js' 
-				, './src/common/browser.js' 
-				, './src/common/common.js' 
-				, './src/common/cookie.js' 
-				, './src/common/file.js' 
-				, './src/common/number.js' 
-				, './src/common/request.js' 
-				, './src/common/storage.js' 
-				, './src/common/string.js' 
-				, './src/common/time.js' 
-				, './src/common/wx.js' 
-				, './src/display/calendar.js' 
-				, './src/display/loading.js' 
-				, './src/display/placeholder.js' 
-				, './src/display/toast.js' 
+				'./src/index.js',
+				'./src/common/array.js', 
+				'./src/common/browser.js', 
+				'./src/common/common.js', 
+				'./src/common/cookie.js', 
+				'./src/common/file.js',
+				'./src/common/number.js',
+				'./src/common/request.js',
+				'./src/common/storage.js',
+				'./src/common/string.js',
+				'./src/common/time.js',
+				'./src/common/wx.js',
+				'./src/display/calendar.js', 
+				'./src/display/loading.js', 
+				'./src/display/placeholder.js', 
+				'./src/display/toast.js' 
 			]) 
 			.pipe(concat('myApi.js'))   				//合并js
 			.pipe(strip())								//删除注释
