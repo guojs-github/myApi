@@ -1,11 +1,11 @@
-var gulp		=require('gulp'),  				//gulp基础库
-    minifycss	=require('gulp-minify-css'),	//css压缩
-    concat		=require('gulp-concat'),   		//合并文件
-    uglify		=require('gulp-uglify'),   		//js压缩
-    rename		=require('gulp-rename'),   		//文件重命名
-    jshint		=require('gulp-jshint'),   		//js检查
-	del			=require('del'),				//文件删除
-    notify		=require('gulp-notify');   		//提示
+const gulp		= require('gulp'),  				//gulp基础库
+      cleancss	= require('gulp-clean-css'),		//css压缩
+      concat	= require('gulp-concat'),   		//合并文件
+      uglify	= require('gulp-uglify'),   		//js压缩
+      rename	= require('gulp-rename'),   		//文件重命名
+      jshint	= require('gulp-jshint'),   		//js检查
+	  del		= require('del'),					//文件删除
+      notify	= require('gulp-notify');   		//提示
 
 gulp.task('clean', function() {
 	// 清除指定文件
@@ -28,7 +28,7 @@ gulp.task('minify-css', function(){
        .pipe(concat('myApi.css'))      					//合并css
        .pipe(gulp.dest('dist/css'))           			//输出
        .pipe(rename({suffix:'.min'}))         			//重命名
-       .pipe(minifycss())                    			//压缩
+       .pipe(cleancss())                    			//压缩
        .pipe(gulp.dest('dist/css'))            			//输出
 });
 
